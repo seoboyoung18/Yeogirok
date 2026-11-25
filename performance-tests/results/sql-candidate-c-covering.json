@@ -1,0 +1,214 @@
+{
+ "label": "candidate-c-covering",
+ "runs": 5,
+ "scales": {
+  "100000": {
+   "sizes": {
+    "ar_tips": {
+     "table_bytes": 21004288,
+     "index_bytes": 6725632
+    },
+    "footprints": {
+     "table_bytes": 20537344,
+     "index_bytes": 9764864
+    }
+   },
+   "queries": {
+    "046 방문 분포(서울 화면)": {
+     "median_ms": 7.641,
+     "min_ms": 7.284,
+     "max_ms": 8.369,
+     "scan": "Index Only Scan(ix_fp_geo_cover)",
+     "rows_out": 3638,
+     "rows_scanned": 4594,
+     "buffers": 78
+    },
+    "046 방문 분포(동네 화면)": {
+     "median_ms": 0.506,
+     "min_ms": 0.459,
+     "max_ms": 0.528,
+     "scan": "Index Only Scan(ix_fp_geo_cover)",
+     "rows_out": 111,
+     "rows_scanned": 158,
+     "buffers": 12
+    },
+    "046 방문 분포(서울, 최근 30일)": {
+     "median_ms": 5.298,
+     "min_ms": 5.199,
+     "max_ms": 5.307,
+     "scan": "Bitmap Heap Scan, Bitmap Index Scan(ix_fp_geo_cover)",
+     "rows_out": 376,
+     "rows_scanned": 9188,
+     "buffers": 2214
+    },
+    "046 방문 분포(서울, 카테고리)": {
+     "median_ms": 4.545,
+     "min_ms": 4.346,
+     "max_ms": 6.471,
+     "scan": "Index Only Scan(ix_fp_geo_cover)",
+     "rows_out": 786,
+     "rows_scanned": 4594,
+     "buffers": 84
+    },
+    "046 방문 분포(전국, 도 단위)": {
+     "median_ms": 247.667,
+     "min_ms": 240.533,
+     "max_ms": 286.703,
+     "scan": "Seq Scan",
+     "rows_out": 5903,
+     "rows_scanned": 100000,
+     "buffers": 2513
+    },
+    "047 주변 팁(100m 사각형)": {
+     "median_ms": 0.059,
+     "min_ms": 0.057,
+     "max_ms": 0.097,
+     "scan": "Index Scan(ix_tip_geo)",
+     "rows_out": 0,
+     "rows_scanned": 0,
+     "buffers": 3
+    },
+    "041 같은 날 내 발자취": {
+     "median_ms": 0.103,
+     "min_ms": 0.102,
+     "max_ms": 0.132,
+     "scan": "Bitmap Heap Scan, Bitmap Index Scan(ix_fp_user)",
+     "rows_out": 0,
+     "rows_scanned": 22,
+     "buffers": 16
+    },
+    "042 내 발자취 목록": {
+     "median_ms": 0.127,
+     "min_ms": 0.125,
+     "max_ms": 0.129,
+     "scan": "Bitmap Heap Scan, Bitmap Index Scan(ix_fp_user)",
+     "rows_out": 11,
+     "rows_scanned": 22,
+     "buffers": 22
+    },
+    "053 내 팁 목록": {
+     "median_ms": 0.116,
+     "min_ms": 0.112,
+     "max_ms": 0.144,
+     "scan": "Bitmap Heap Scan, Bitmap Index Scan(ix_tip_author)",
+     "rows_out": 11,
+     "rows_scanned": 22,
+     "buffers": 22
+    },
+    "INSERT 발자취 1,000행": {
+     "median_ms": 5.418,
+     "min_ms": 5.269,
+     "max_ms": 5.443,
+     "scan": "Function Scan",
+     "rows_out": 0,
+     "rows_scanned": 1000,
+     "buffers": 9150
+    }
+   }
+  },
+  "1000000": {
+   "sizes": {
+    "ar_tips": {
+     "table_bytes": 210051072,
+     "index_bytes": 66781184
+    },
+    "footprints": {
+     "table_bytes": 207134720,
+     "index_bytes": 97075200
+    }
+   },
+   "queries": {
+    "046 방문 분포(서울 화면)": {
+     "median_ms": 71.669,
+     "min_ms": 68.156,
+     "max_ms": 71.798,
+     "scan": "Index Only Scan(ix_fp_geo_cover)",
+     "rows_out": 16867,
+     "rows_scanned": 46049,
+     "buffers": 744
+    },
+    "046 방문 분포(동네 화면)": {
+     "median_ms": 3.29,
+     "min_ms": 3.241,
+     "max_ms": 3.604,
+     "scan": "Index Only Scan(ix_fp_geo_cover)",
+     "rows_out": 367,
+     "rows_scanned": 1543,
+     "buffers": 84
+    },
+    "046 방문 분포(서울, 최근 30일)": {
+     "median_ms": 112.509,
+     "min_ms": 108.613,
+     "max_ms": 122.953,
+     "scan": "Bitmap Heap Scan, Bitmap Index Scan(ix_fp_geo_cover)",
+     "rows_out": 3121,
+     "rows_scanned": 92098,
+     "buffers": 22155
+    },
+    "046 방문 분포(서울, 카테고리)": {
+     "median_ms": 48.826,
+     "min_ms": 46.101,
+     "max_ms": 49.496,
+     "scan": "Index Only Scan(ix_fp_geo_cover)",
+     "rows_out": 4431,
+     "rows_scanned": 46049,
+     "buffers": 750
+    },
+    "046 방문 분포(전국, 도 단위)": {
+     "median_ms": 1191.98,
+     "min_ms": 1180.569,
+     "max_ms": 1219.763,
+     "scan": "Seq Scan",
+     "rows_out": 7256,
+     "rows_scanned": 1000002,
+     "buffers": 25375
+    },
+    "047 주변 팁(100m 사각형)": {
+     "median_ms": 0.203,
+     "min_ms": 0.198,
+     "max_ms": 0.22,
+     "scan": "Index Scan(ix_tip_geo)",
+     "rows_out": 10,
+     "rows_scanned": 10,
+     "buffers": 17
+    },
+    "041 같은 날 내 발자취": {
+     "median_ms": 0.135,
+     "min_ms": 0.133,
+     "max_ms": 0.16,
+     "scan": "Bitmap Heap Scan, Bitmap Index Scan(ix_fp_user)",
+     "rows_out": 0,
+     "rows_scanned": 40,
+     "buffers": 26
+    },
+    "042 내 발자취 목록": {
+     "median_ms": 0.184,
+     "min_ms": 0.165,
+     "max_ms": 0.189,
+     "scan": "Bitmap Heap Scan, Bitmap Index Scan(ix_fp_user)",
+     "rows_out": 20,
+     "rows_scanned": 40,
+     "buffers": 32
+    },
+    "053 내 팁 목록": {
+     "median_ms": 0.102,
+     "min_ms": 0.101,
+     "max_ms": 0.134,
+     "scan": "Bitmap Heap Scan, Bitmap Index Scan(ix_tip_author)",
+     "rows_out": 20,
+     "rows_scanned": 40,
+     "buffers": 32
+    },
+    "INSERT 발자취 1,000행": {
+     "median_ms": 7.391,
+     "min_ms": 5.385,
+     "max_ms": 11.635,
+     "scan": "Function Scan",
+     "rows_out": 0,
+     "rows_scanned": 1000,
+     "buffers": 9179
+    }
+   }
+  }
+ }
+}

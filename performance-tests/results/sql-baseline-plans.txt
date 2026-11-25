@@ -1,0 +1,232 @@
+-- 046 방문 분포(서울 화면)
+GroupAggregate  (cost=35225.31..38017.44 rows=16768 width=176) (actual time=79.078..112.536 rows=16867 loops=1)
+  Group Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+  Buffers: shared hit=6833 read=18584
+  I/O Timings: shared read=18.103
+  ->  Gather Merge  (cost=35225.31..37178.92 rows=16774 width=120) (actual time=79.063..97.384 rows=46049 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=6833 read=18584
+        I/O Timings: shared read=18.103
+        ->  Sort  (cost=34225.29..34242.76 rows=6989 width=120) (actual time=76.730..78.065 rows=15350 loops=3)
+              Sort Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+              Sort Method: quicksort  Memory: 1672kB
+              Buffers: shared hit=6833 read=18584
+              I/O Timings: shared read=18.103
+              Worker 0:  Sort Method: quicksort  Memory: 1610kB
+              Worker 1:  Sort Method: quicksort  Memory: 1576kB
+              ->  Parallel Seq Scan on footprints  (cost=0.00..33779.01 rows=6989 width=120) (actual time=0.027..57.178 rows=15350 loops=3)
+                    Filter: ((deleted_at IS NULL) AND (latitude >= 37.45) AND (latitude < 37.65) AND (longitude >= 126.85) AND (longitude < 127.15))
+                    Rows Removed by Filter: 317984
+                    Buffers: shared hit=6743 read=18584
+                    I/O Timings: shared read=18.103
+Planning:
+  Buffers: shared hit=138
+Planning Time: 0.415 ms
+Execution Time: 113.088 ms
+
+
+-- 046 방문 분포(동네 화면)
+Finalize GroupAggregate  (cost=34679.02..34719.09 rows=241 width=176) (actual time=50.045..51.962 rows=367 loops=1)
+  Group Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+  Buffers: shared hit=6929 read=18488
+  I/O Timings: shared read=18.046
+  ->  Gather Merge  (cost=34679.02..34707.36 rows=200 width=176) (actual time=50.031..51.610 rows=664 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=6929 read=18488
+        I/O Timings: shared read=18.046
+        ->  Partial GroupAggregate  (cost=33679.00..33684.25 rows=100 width=176) (actual time=47.848..48.069 rows=221 loops=3)
+              Group Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+              Buffers: shared hit=6929 read=18488
+              I/O Timings: shared read=18.046
+              ->  Sort  (cost=33679.00..33679.25 rows=100 width=120) (actual time=47.834..47.851 rows=514 loops=3)
+                    Sort Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+                    Sort Method: quicksort  Memory: 68kB
+                    Buffers: shared hit=6929 read=18488
+                    I/O Timings: shared read=18.046
+                    Worker 0:  Sort Method: quicksort  Memory: 66kB
+                    Worker 1:  Sort Method: quicksort  Memory: 63kB
+                    ->  Parallel Seq Scan on footprints  (cost=0.00..33675.68 rows=100 width=120) (actual time=0.170..47.138 rows=514 loops=3)
+                          Filter: ((deleted_at IS NULL) AND (latitude >= 37.55) AND (latitude < 37.57) AND (longitude >= 126.97) AND (longitude < 127.00))
+                          Rows Removed by Filter: 332819
+                          Buffers: shared hit=6839 read=18488
+                          I/O Timings: shared read=18.046
+Planning:
+  Buffers: shared hit=138
+Planning Time: 0.321 ms
+Execution Time: 52.053 ms
+
+
+-- 046 방문 분포(서울, 최근 30일)
+GroupAggregate  (cost=39924.87..40147.11 rows=1335 width=176) (actual time=56.117..59.317 rows=3121 loops=1)
+  Group Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+  Buffers: shared hit=7025 read=18392
+  I/O Timings: shared read=17.398
+  ->  Gather Merge  (cost=39924.87..40080.36 rows=1335 width=120) (actual time=56.106..57.565 rows=3781 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=7025 read=18392
+        I/O Timings: shared read=17.398
+        ->  Sort  (cost=38924.85..38926.24 rows=556 width=120) (actual time=54.323..54.373 rows=1260 loops=3)
+              Sort Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+              Sort Method: quicksort  Memory: 155kB
+              Buffers: shared hit=7025 read=18392
+              I/O Timings: shared read=17.398
+              Worker 0:  Sort Method: quicksort  Memory: 150kB
+              Worker 1:  Sort Method: quicksort  Memory: 145kB
+              ->  Parallel Seq Scan on footprints  (cost=0.00..38899.50 rows=556 width=120) (actual time=0.059..53.202 rows=1260 loops=3)
+                    Filter: ((deleted_at IS NULL) AND (latitude >= 37.45) AND (latitude < 37.65) AND (longitude >= 126.85) AND (longitude < 127.15) AND (visited_at < now()) AND (visited_at >= (now() - '30 days'::interval)))
+                    Rows Removed by Filter: 332073
+                    Buffers: shared hit=6935 read=18392
+                    I/O Timings: shared read=17.398
+Planning:
+  Buffers: shared hit=149
+Planning Time: 0.328 ms
+Execution Time: 59.461 ms
+
+
+-- 046 방문 분포(서울, 카테고리)
+GroupAggregate  (cost=37804.95..37805.22 rows=5 width=176) (actual time=77.511..81.608 rows=4431 loops=1)
+  Group Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+  Buffers: shared hit=7037 read=18296
+  I/O Timings: shared read=17.906
+  ->  Sort  (cost=37804.95..37804.97 rows=5 width=120) (actual time=77.497..77.991 rows=9304 loops=1)
+        Sort Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+        Sort Method: quicksort  Memory: 1141kB
+        Buffers: shared hit=7037 read=18296
+        I/O Timings: shared read=17.906
+        ->  Gather  (cost=1000.00..37804.90 rows=5 width=120) (actual time=0.257..67.993 rows=9304 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=7031 read=18296
+              I/O Timings: shared read=17.906
+              ->  Parallel Seq Scan on footprints  (cost=0.00..36804.40 rows=2 width=120) (actual time=0.119..66.604 rows=3101 loops=3)
+                    Filter: ((deleted_at IS NULL) AND (latitude >= 37.45) AND (latitude < 37.65) AND (longitude >= 126.85) AND (longitude < 127.15) AND (((category_codes)::character varying)::text ~~ '%"CAFE"%'::text))
+                    Rows Removed by Filter: 330232
+                    Buffers: shared hit=7031 read=18296
+                    I/O Timings: shared read=17.906
+Planning:
+  Buffers: shared hit=135
+Planning Time: 0.305 ms
+Execution Time: 81.835 ms
+
+
+-- 046 방문 분포(전국, 도 단위)
+GroupAggregate  (cost=135291.58..292533.60 rows=919952 width=200) (actual time=652.593..1170.395 rows=7256 loops=1)
+  Group Key: ("substring"((footprints.legal_area_code)::text, 1, 2)), (CASE WHEN (footprints.legal_area_code IS NULL) THEN floor((footprints.latitude / 0.64)) ELSE '0'::numeric END), (CASE WHEN (footprints.legal_area_code IS NULL) THEN floor((footprints.longitude / 0.64)) ELSE '0'::numeric END), ((footprints.category_codes)::character varying)
+  Buffers: shared hit=7217 read=18200, temp read=6353 written=6374
+  I/O Timings: shared read=19.076, temp read=6.459 write=20.537
+  ->  Gather Merge  (cost=135291.58..246000.31 rows=950563 width=144) (actual time=651.291..977.598 rows=949628 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=7217 read=18200, temp read=6353 written=6374
+        I/O Timings: shared read=19.076, temp read=6.459 write=20.537
+        ->  Sort  (cost=134291.56..135281.73 rows=396068 width=144) (actual time=628.569..738.527 rows=316543 loops=3)
+              Sort Key: ("substring"((footprints.legal_area_code)::text, 1, 2)), (CASE WHEN (footprints.legal_area_code IS NULL) THEN floor((footprints.latitude / 0.64)) ELSE '0'::numeric END), (CASE WHEN (footprints.legal_area_code IS NULL) THEN floor((footprints.longitude / 0.64)) ELSE '0'::numeric END), ((footprints.category_codes)::character varying)
+              Sort Method: external merge  Disk: 17576kB
+              Buffers: shared hit=7217 read=18200, temp read=6353 written=6374
+              I/O Timings: shared read=19.076, temp read=6.459 write=20.537
+              Worker 0:  Sort Method: external merge  Disk: 17256kB
+              Worker 1:  Sort Method: external merge  Disk: 15992kB
+              ->  Parallel Seq Scan on footprints  (cost=0.00..40605.37 rows=396068 width=144) (actual time=4.332..208.698 rows=316543 loops=3)
+                    Filter: ((deleted_at IS NULL) AND (latitude >= '33'::numeric) AND (latitude < '39'::numeric) AND (longitude >= '124'::numeric) AND (longitude < '132'::numeric))
+                    Rows Removed by Filter: 16791
+                    Buffers: shared hit=7127 read=18200
+                    I/O Timings: shared read=19.076
+Planning:
+  Buffers: shared hit=132
+Planning Time: 0.353 ms
+JIT:
+  Functions: 15
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 1.391 ms, Inlining 0.000 ms, Optimization 0.841 ms, Emission 12.075 ms, Total 14.308 ms
+Execution Time: 1184.248 ms
+
+
+-- 047 주변 팁(100m 사각형)
+Gather  (cost=1000.00..36016.10 rows=1 width=174) (actual time=7.613..54.060 rows=10 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=8756 read=16885
+  I/O Timings: shared read=16.120
+  ->  Parallel Seq Scan on ar_tips  (cost=0.00..35016.00 rows=1 width=174) (actual time=8.005..50.302 rows=3 loops=3)
+        Filter: ((deleted_at IS NULL) AND (latitude >= 37.5656) AND (latitude <= 37.5674) AND (longitude >= 126.97686) AND (longitude <= 126.97914) AND ((status)::text = 'PUBLISHED'::text))
+        Rows Removed by Filter: 333330
+        Buffers: shared hit=8756 read=16885
+        I/O Timings: shared read=16.120
+Planning:
+  Buffers: shared hit=127
+Planning Time: 0.323 ms
+Execution Time: 54.103 ms
+
+
+-- 041 같은 날 내 발자취
+Gather  (cost=1000.00..40934.66 rows=1 width=185) (actual time=29.322..31.020 rows=0 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=7223 read=18104
+  I/O Timings: shared read=17.311
+  ->  Parallel Seq Scan on footprints  (cost=0.00..39934.56 rows=1 width=185) (actual time=27.523..27.524 rows=0 loops=3)
+        Filter: ((deleted_at IS NULL) AND (user_id = 1) AND (created_at < (date_trunc('day'::text, now()) + '04:00:00'::interval)) AND (created_at >= ((date_trunc('day'::text, now()) + '04:00:00'::interval) - '1 day'::interval)))
+        Rows Removed by Filter: 333333
+        Buffers: shared hit=7223 read=18104
+        I/O Timings: shared read=17.311
+Planning:
+  Buffers: shared hit=116
+Planning Time: 0.239 ms
+Execution Time: 31.054 ms
+
+
+-- 042 내 발자취 목록
+Limit  (cost=31544.13..31545.99 rows=16 width=185) (actual time=28.526..30.173 rows=20 loops=1)
+  Buffers: shared hit=7409 read=18008
+  I/O Timings: shared read=17.248
+  ->  Gather Merge  (cost=31544.13..31545.99 rows=16 width=185) (actual time=28.524..30.170 rows=20 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=7409 read=18008
+        I/O Timings: shared read=17.248
+        ->  Sort  (cost=30544.10..30544.12 rows=8 width=185) (actual time=26.597..26.598 rows=7 loops=3)
+              Sort Key: visited_at DESC, id DESC
+              Sort Method: quicksort  Memory: 27kB
+              Buffers: shared hit=7409 read=18008
+              I/O Timings: shared read=17.248
+              Worker 0:  Sort Method: quicksort  Memory: 27kB
+              Worker 1:  Sort Method: quicksort  Memory: 25kB
+              ->  Parallel Seq Scan on footprints  (cost=0.00..30543.98 rows=8 width=185) (actual time=5.469..26.549 rows=7 loops=3)
+                    Filter: ((deleted_at IS NULL) AND (user_id = 1))
+                    Rows Removed by Filter: 333327
+                    Buffers: shared hit=7319 read=18008
+                    I/O Timings: shared read=17.248
+Planning:
+  Buffers: shared hit=126
+Planning Time: 0.241 ms
+Execution Time: 30.226 ms
+
+
+-- 053 내 팁 목록
+Limit  (cost=38620.31..38622.18 rows=16 width=174) (actual time=31.110..32.872 rows=20 loops=1)
+  Buffers: shared hit=8690 read=17041
+  I/O Timings: shared read=17.212
+  ->  Gather Merge  (cost=38620.31..38622.18 rows=16 width=174) (actual time=31.108..32.868 rows=20 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=8690 read=17041
+        I/O Timings: shared read=17.212
+        ->  Sort  (cost=37620.29..37620.31 rows=8 width=174) (actual time=29.154..29.156 rows=7 loops=3)
+              Sort Key: created_at DESC, id DESC
+              Sort Method: quicksort  Memory: 25kB
+              Buffers: shared hit=8690 read=17041
+              I/O Timings: shared read=17.212
+              Worker 0:  Sort Method: quicksort  Memory: 26kB
+              Worker 1:  Sort Method: quicksort  Memory: 27kB
+              ->  Parallel Seq Scan on ar_tips  (cost=0.00..37620.17 rows=8 width=174) (actual time=5.204..29.110 rows=7 loops=3)
+                    Filter: ((deleted_at IS NULL) AND (author_id = 1) AND ((status)::text = ANY ('{REGISTERING,PUBLISHED,FAILED}'::text[])) AND ((created_at < now()) OR ((created_at = now()) AND (id < '9223372036854775807'::bigint))))
+                    Rows Removed by Filter: 333327
+                    Buffers: shared hit=8600 read=17041
+                    I/O Timings: shared read=17.212
+Planning:
+  Buffers: shared hit=206
+Planning Time: 0.383 ms
+Execution Time: 32.920 ms

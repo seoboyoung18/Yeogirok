@@ -1,0 +1,209 @@
+-- 046 방문 분포(서울 화면)
+HashAggregate  (cost=27096.94..27569.44 rows=15750 width=176) (actual time=145.647..153.438 rows=16867 loops=1)
+  Group Key: floor((footprints.latitude / 0.01)), floor((footprints.longitude / 0.01)), (footprints.category_codes)::character varying
+  Batches: 5  Memory Usage: 8369kB  Disk Usage: 760kB
+  Buffers: shared hit=3735 read=18740 written=1, temp read=94 written=164
+  I/O Timings: shared read=40.996 write=0.043, temp read=0.133 write=0.645
+  ->  Bitmap Heap Scan on footprints  (cost=2995.14..26781.86 rows=15754 width=120) (actual time=25.251..117.598 rows=46049 loops=1)
+        Recheck Cond: ((latitude >= 37.45) AND (latitude < 37.65) AND (longitude >= 126.85) AND (longitude < 127.15) AND (deleted_at IS NULL))
+        Heap Blocks: exact=22020
+        Buffers: shared hit=3735 read=18740 written=1
+        I/O Timings: shared read=40.996 write=0.043
+        ->  Bitmap Index Scan on ix_fp_geo  (cost=0.00..2991.20 rows=15754 width=0) (actual time=23.032..23.033 rows=52049 loops=1)
+              Index Cond: ((latitude >= 37.45) AND (latitude < 37.65) AND (longitude >= 126.85) AND (longitude < 127.15))
+              Buffers: shared hit=53 read=402
+              I/O Timings: shared read=1.040
+Planning:
+  Buffers: shared hit=176
+Planning Time: 0.384 ms
+Execution Time: 154.466 ms
+
+
+-- 046 방문 분포(동네 화면)
+GroupAggregate  (cost=1095.27..1105.93 rows=203 width=176) (actual time=9.056..9.551 rows=367 loops=1)
+  Group Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+  Buffers: shared hit=1040 read=499
+  I/O Timings: shared read=1.415
+  ->  Sort  (cost=1095.27..1095.78 rows=203 width=120) (actual time=9.042..9.088 rows=1543 loops=1)
+        Sort Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+        Sort Method: quicksort  Memory: 172kB
+        Buffers: shared hit=1040 read=499
+        I/O Timings: shared read=1.415
+        ->  Bitmap Heap Scan on footprints  (cost=322.91..1087.49 rows=203 width=120) (actual time=2.249..7.399 rows=1543 loops=1)
+              Recheck Cond: ((latitude >= 37.55) AND (latitude < 37.57) AND (longitude >= 126.97) AND (longitude < 127.00) AND (deleted_at IS NULL))
+              Heap Blocks: exact=1484
+              Buffers: shared hit=1034 read=499
+              I/O Timings: shared read=1.415
+              ->  Bitmap Index Scan on ix_fp_geo  (cost=0.00..322.86 rows=203 width=0) (actual time=2.107..2.107 rows=1543 loops=1)
+                    Index Cond: ((latitude >= 37.55) AND (latitude < 37.57) AND (longitude >= 126.97) AND (longitude < 127.00))
+                    Buffers: shared hit=1 read=48
+                    I/O Timings: shared read=0.131
+Planning:
+  Buffers: shared hit=175 read=1
+  I/O Timings: shared read=0.007
+Planning Time: 0.445 ms
+Execution Time: 9.623 ms
+
+
+-- 046 방문 분포(서울, 최근 30일)
+GroupAggregate  (cost=26825.45..26893.59 rows=1298 width=176) (actual time=104.131..106.359 rows=3121 loops=1)
+  Group Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+  Buffers: shared hit=2287 read=20194 written=3228
+  I/O Timings: shared read=35.762 write=6.825
+  ->  Sort  (cost=26825.45..26828.69 rows=1298 width=120) (actual time=104.115..104.282 rows=3781 loops=1)
+        Sort Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+        Sort Method: quicksort  Memory: 401kB
+        Buffers: shared hit=2287 read=20194 written=3228
+        I/O Timings: shared read=35.762 write=6.825
+        ->  Bitmap Heap Scan on footprints  (cost=2991.52..26758.33 rows=1298 width=120) (actual time=25.588..100.001 rows=3781 loops=1)
+              Recheck Cond: ((latitude >= 37.45) AND (latitude < 37.65) AND (longitude >= 126.85) AND (longitude < 127.15) AND (deleted_at IS NULL))
+              Filter: ((visited_at < now()) AND (visited_at >= (now() - '30 days'::interval)))
+              Rows Removed by Filter: 42268
+              Heap Blocks: exact=22020
+              Buffers: shared hit=2281 read=20194 written=3228
+              I/O Timings: shared read=35.762 write=6.825
+              ->  Bitmap Index Scan on ix_fp_geo  (cost=0.00..2991.20 rows=15754 width=0) (actual time=23.355..23.355 rows=52049 loops=1)
+                    Index Cond: ((latitude >= 37.45) AND (latitude < 37.65) AND (longitude >= 126.85) AND (longitude < 127.15))
+                    Buffers: shared hit=100 read=355
+                    I/O Timings: shared read=1.061
+Planning:
+  Buffers: shared hit=187
+Planning Time: 0.417 ms
+Execution Time: 106.587 ms
+
+
+-- 046 방문 분포(서울, 카테고리)
+GroupAggregate  (cost=26659.90..26660.16 rows=5 width=176) (actual time=126.883..130.668 rows=4431 loops=1)
+  Group Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+  Buffers: shared hit=169 read=22312 written=170
+  I/O Timings: shared read=48.693 write=0.522
+  ->  Sort  (cost=26659.90..26659.91 rows=5 width=120) (actual time=126.866..127.167 rows=9304 loops=1)
+        Sort Key: (floor((footprints.latitude / 0.01))), (floor((footprints.longitude / 0.01))), ((footprints.category_codes)::character varying)
+        Sort Method: quicksort  Memory: 1141kB
+        Buffers: shared hit=169 read=22312 written=170
+        I/O Timings: shared read=48.693 write=0.522
+        ->  Bitmap Heap Scan on footprints  (cost=2991.20..26659.84 rows=5 width=120) (actual time=24.454..116.173 rows=9304 loops=1)
+              Recheck Cond: ((latitude >= 37.45) AND (latitude < 37.65) AND (longitude >= 126.85) AND (longitude < 127.15) AND (deleted_at IS NULL))
+              Filter: (((category_codes)::character varying)::text ~~ '%"CAFE"%'::text)
+              Rows Removed by Filter: 36745
+              Heap Blocks: exact=22020
+              Buffers: shared hit=163 read=22312 written=170
+              I/O Timings: shared read=48.693 write=0.522
+              ->  Bitmap Index Scan on ix_fp_geo  (cost=0.00..2991.20 rows=15754 width=0) (actual time=22.179..22.180 rows=52049 loops=1)
+                    Index Cond: ((latitude >= 37.45) AND (latitude < 37.65) AND (longitude >= 126.85) AND (longitude < 127.15))
+                    Buffers: shared hit=99 read=356
+                    I/O Timings: shared read=0.954
+Planning:
+  Buffers: shared hit=173
+Planning Time: 0.381 ms
+Execution Time: 131.000 ms
+
+
+-- 046 방문 분포(전국, 도 단위)
+GroupAggregate  (cost=135213.57..292606.20 rows=927612 width=200) (actual time=659.660..1169.991 rows=7256 loops=1)
+  Group Key: ("substring"((footprints.legal_area_code)::text, 1, 2)), (CASE WHEN (footprints.legal_area_code IS NULL) THEN floor((footprints.latitude / 0.64)) ELSE '0'::numeric END), (CASE WHEN (footprints.legal_area_code IS NULL) THEN floor((footprints.longitude / 0.64)) ELSE '0'::numeric END), ((footprints.category_codes)::character varying)
+  Buffers: shared hit=16184 read=9233, temp read=6354 written=6375
+  I/O Timings: shared read=10.857, temp read=7.350 write=14.914
+  ->  Gather Merge  (cost=135213.57..245836.81 rows=949829 width=144) (actual time=658.413..979.221 rows=949628 loops=1)
+        Workers Planned: 2
+        Workers Launched: 2
+        Buffers: shared hit=16184 read=9233, temp read=6354 written=6375
+        I/O Timings: shared read=10.857, temp read=7.350 write=14.914
+        ->  Sort  (cost=134213.54..135202.95 rows=395762 width=144) (actual time=637.352..747.730 rows=316543 loops=3)
+              Sort Key: ("substring"((footprints.legal_area_code)::text, 1, 2)), (CASE WHEN (footprints.legal_area_code IS NULL) THEN floor((footprints.latitude / 0.64)) ELSE '0'::numeric END), (CASE WHEN (footprints.legal_area_code IS NULL) THEN floor((footprints.longitude / 0.64)) ELSE '0'::numeric END), ((footprints.category_codes)::character varying)
+              Sort Method: external merge  Disk: 16928kB
+              Buffers: shared hit=16184 read=9233, temp read=6354 written=6375
+              I/O Timings: shared read=10.857, temp read=7.350 write=14.914
+              Worker 0:  Sort Method: external merge  Disk: 16408kB
+              Worker 1:  Sort Method: external merge  Disk: 17496kB
+              ->  Parallel Seq Scan on footprints  (cost=0.00..40600.01 rows=395762 width=144) (actual time=4.512..200.794 rows=316543 loops=3)
+                    Filter: ((deleted_at IS NULL) AND (latitude >= '33'::numeric) AND (latitude < '39'::numeric) AND (longitude >= '124'::numeric) AND (longitude < '132'::numeric))
+                    Rows Removed by Filter: 16791
+                    Buffers: shared hit=16094 read=9233
+                    I/O Timings: shared read=10.857
+Planning:
+  Buffers: shared hit=172 read=1
+  I/O Timings: shared read=0.018
+Planning Time: 0.442 ms
+JIT:
+  Functions: 15
+  Options: Inlining false, Optimization false, Expressions true, Deforming true
+  Timing: Generation 1.474 ms, Inlining 0.000 ms, Optimization 0.789 ms, Emission 12.691 ms, Total 14.954 ms
+Execution Time: 1182.725 ms
+
+
+-- 047 주변 팁(100m 사각형)
+Index Scan using ix_tip_geo on ar_tips  (cost=0.42..31.67 rows=1 width=174) (actual time=0.098..0.222 rows=10 loops=1)
+  Index Cond: ((latitude >= 37.5656) AND (latitude <= 37.5674) AND (longitude >= 126.97686) AND (longitude <= 126.97914))
+  Buffers: shared read=17
+  I/O Timings: shared read=0.057
+Planning:
+  Buffers: shared hit=154 read=15
+  I/O Timings: shared read=0.046
+Planning Time: 0.388 ms
+Execution Time: 0.254 ms
+
+
+-- 041 같은 날 내 발자취
+Bitmap Heap Scan on footprints  (cost=4.58..83.59 rows=1 width=185) (actual time=0.448..0.449 rows=0 loops=1)
+  Recheck Cond: ((user_id = 1) AND (deleted_at IS NULL))
+  Filter: ((created_at < (date_trunc('day'::text, now()) + '04:00:00'::interval)) AND (created_at >= ((date_trunc('day'::text, now()) + '04:00:00'::interval) - '1 day'::interval)))
+  Rows Removed by Filter: 20
+  Heap Blocks: exact=134
+  Buffers: shared hit=108 read=32
+  I/O Timings: shared read=0.097
+  ->  Bitmap Index Scan on ix_fp_user  (cost=0.00..4.58 rows=20 width=0) (actual time=0.039..0.039 rows=140 loops=1)
+        Index Cond: (user_id = 1)
+        Buffers: shared hit=3 read=3
+        I/O Timings: shared read=0.020
+Planning:
+  Buffers: shared hit=155 read=3
+  I/O Timings: shared read=0.015
+Planning Time: 0.342 ms
+Execution Time: 0.489 ms
+
+
+-- 042 내 발자취 목록
+Limit  (cost=83.58..83.63 rows=20 width=185) (actual time=0.367..0.369 rows=20 loops=1)
+  Buffers: shared hit=146
+  ->  Sort  (cost=83.58..83.63 rows=20 width=185) (actual time=0.365..0.366 rows=20 loops=1)
+        Sort Key: visited_at DESC, id DESC
+        Sort Method: quicksort  Memory: 30kB
+        Buffers: shared hit=146
+        ->  Bitmap Heap Scan on footprints  (cost=4.58..83.14 rows=20 width=185) (actual time=0.041..0.333 rows=20 loops=1)
+              Recheck Cond: ((user_id = 1) AND (deleted_at IS NULL))
+              Heap Blocks: exact=134
+              Buffers: shared hit=140
+              ->  Bitmap Index Scan on ix_fp_user  (cost=0.00..4.58 rows=20 width=0) (actual time=0.016..0.017 rows=140 loops=1)
+                    Index Cond: (user_id = 1)
+                    Buffers: shared hit=6
+Planning:
+  Buffers: shared hit=173
+Planning Time: 0.324 ms
+Execution Time: 0.414 ms
+
+
+-- 053 내 팁 목록
+Limit  (cost=83.91..83.96 rows=20 width=174) (actual time=0.150..0.152 rows=20 loops=1)
+  Buffers: shared hit=9 read=23
+  I/O Timings: shared read=0.067
+  ->  Sort  (cost=83.91..83.96 rows=20 width=174) (actual time=0.149..0.150 rows=20 loops=1)
+        Sort Key: created_at DESC, id DESC
+        Sort Method: quicksort  Memory: 30kB
+        Buffers: shared hit=9 read=23
+        I/O Timings: shared read=0.067
+        ->  Bitmap Heap Scan on ar_tips  (cost=4.58..83.48 rows=20 width=174) (actual time=0.039..0.128 rows=20 loops=1)
+              Recheck Cond: ((author_id = 1) AND (deleted_at IS NULL))
+              Filter: (((status)::text = ANY ('{REGISTERING,PUBLISHED,FAILED}'::text[])) AND ((created_at < now()) OR ((created_at = now()) AND (id < '9223372036854775807'::bigint))))
+              Heap Blocks: exact=20
+              Buffers: shared hit=3 read=23
+              I/O Timings: shared read=0.067
+              ->  Bitmap Index Scan on ix_tip_author  (cost=0.00..4.58 rows=20 width=0) (actual time=0.028..0.028 rows=20 loops=1)
+                    Index Cond: (author_id = 1)
+                    Buffers: shared hit=3 read=3
+                    I/O Timings: shared read=0.011
+Planning:
+  Buffers: shared hit=237 read=4
+  I/O Timings: shared read=0.015
+Planning Time: 0.439 ms
+Execution Time: 0.185 ms
