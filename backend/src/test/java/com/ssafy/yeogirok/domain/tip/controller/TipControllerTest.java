@@ -246,7 +246,7 @@ class TipControllerTest {
 
 		@Test
 		void 등록하면_202와_tipId_jobId_REGISTERING을_돌려준다() throws Exception {
-			given(tipCreateService.create(eq(USER_ID), any())).willReturn(new TipCreateResponse(10L,
+			given(tipCreateService.create(eq(USER_ID), any(), any())).willReturn(new TipCreateResponse(10L,
 				"550e8400-e29b-41d4-a716-446655440000", TipStatus.REGISTERING));
 
 			perform(post("/api/v1/tips").header("Idempotency-Key", "key-1"), VALID)
@@ -265,7 +265,7 @@ class TipControllerTest {
 
 		@Test
 		void uploadIds를_생략하면_빈_목록이다() throws Exception {
-			given(tipCreateService.create(eq(USER_ID), any())).willReturn(new TipCreateResponse(10L, "j",
+			given(tipCreateService.create(eq(USER_ID), any(), any())).willReturn(new TipCreateResponse(10L, "j",
 				TipStatus.REGISTERING));
 
 			perform(post("/api/v1/tips").header("Idempotency-Key", "key-1"),
@@ -273,7 +273,7 @@ class TipControllerTest {
 				.andExpect(status().isAccepted());
 
 			ArgumentCaptor<TipCreateCommand> command = ArgumentCaptor.forClass(TipCreateCommand.class);
-			verify(tipCreateService).create(eq(USER_ID), command.capture());
+			verify(tipCreateService).create(eq(USER_ID), eq("key-1"), command.capture());
 			assertThat(command.getValue().uploadIds()).isEmpty();
 		}
 

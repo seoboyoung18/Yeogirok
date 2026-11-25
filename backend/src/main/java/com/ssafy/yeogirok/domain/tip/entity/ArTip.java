@@ -19,6 +19,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,7 +31,10 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @Entity
-@Table(name = "ar_tips", check = {
+@Table(name = "ar_tips",
+	// 같은 작성자가 같은 요청 키로 두 번 등록하지 못하게 DB 가 막는다(V7). 키가 없는 행(null)끼리는 겹치지 않는다.
+	uniqueConstraints = @UniqueConstraint(name = "uq_ar_tips_author_request", columnNames = {"author_id", "request_key"}),
+	check = {
 	@CheckConstraint(name = "ar_tips_body_check",
 		constraint = "char_length(body) <= 120 AND char_length(btrim(body)) > 0"),
 	@CheckConstraint(name = "ar_tips_latitude_check", constraint = "latitude BETWEEN -90 AND 90"),
@@ -49,6 +53,10 @@ public class ArTip {
 
 	@Column(name = "author_id", nullable = false)
 	private Long authorId;
+
+	/** 등록 요청의 Idempotency-Key. Redis 멱등 기록이 사라져도 같은 요청이 팁을 또 만들지 않게 한다. 없으면 null. */
+	@Column(name = "request_key", length = 255, updatable = false)
+	private String requestKey;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "category_code", nullable = false, length = 20)
@@ -109,11 +117,13 @@ public class ArTip {
 	/**
 	 * API-049. 게시 전(REGISTERING) 팁. 팁 좌표는 요청 위치(기기 GPS)다.
 	 * @param body {@link TipBody#normalize} 로 정리한 본문
+	 * @param requestKey 등록 요청의 멱등키. 없으면 null
 	 */
-	public static ArTip register(Long authorId, ArTipCategory category, String body, LocationEvidence location,
+	public static ArTip register(Long authorId, String requestKey, ArTipCategory category, String body, LocationEvidence location,
 		String locationPolicyVersion, SpatialReference spatialReference, Map<String, Object> placement, Instant now) {
 		ArTip tip = new ArTip();
 		tip.authorId = authorId;
+		tip.requestKey = requestKey;
 		tip.category = category;
 		tip.body = body;
 		tip.latitude = location.latitude();

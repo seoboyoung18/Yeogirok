@@ -118,7 +118,7 @@ class TipCreateServiceTest {
 
 	@Test
 	void 사진_없이_등록하면_REGISTERING으로_저장하고_media_SKIPPED_작업을_남긴다() {
-		TipCreateResponse response = service.create(AUTHOR, command("  창가 자리\r\n좋아요 ", List.of(), SPATIAL));
+		TipCreateResponse response = service.create(AUTHOR, null, command("  창가 자리\r\n좋아요 ", List.of(), SPATIAL));
 
 		ArTip tip = em.find(ArTip.class, response.tipId());
 		assertThat(response.status()).isEqualTo(TipStatus.REGISTERING);
@@ -138,7 +138,7 @@ class TipCreateServiceTest {
 	void 사진이_있으면_확정_경로를_게시_작업에_넘긴다() {
 		SESSIONS.put(readyPhoto(AUTHOR, FilePurpose.TIP_PHOTO));
 
-		TipCreateResponse response = service.create(AUTHOR, command("좋아요", List.of(UPLOAD_ID), SPATIAL));
+		TipCreateResponse response = service.create(AUTHOR, null, command("좋아요", List.of(UPLOAD_ID), SPATIAL));
 
 		assertThat(STATES.states.get(response.tipId()).steps().media()).isEqualTo(TipPublishState.StepStatus.QUEUED);
 		assertThat(events.stream(TipPublishRequested.class))
@@ -172,7 +172,7 @@ class TipCreateServiceTest {
 	@Test
 	void 게시_전에_같은_사진으로_다시_등록하면_M005이고_첫_팁의_표시는_그대로다() {
 		SESSIONS.put(readyPhoto(AUTHOR, FilePurpose.TIP_PHOTO));
-		TipCreateResponse first = service.create(AUTHOR, command("좋아요", List.of(UPLOAD_ID), SPATIAL));
+		TipCreateResponse first = service.create(AUTHOR, null, command("좋아요", List.of(UPLOAD_ID), SPATIAL));
 
 		expect(command("다른 팁", List.of(UPLOAD_ID), SPATIAL), ExceptionType.FILE_ACCESS_DENIED);
 		assertThat(CLAIMS.claims).containsExactlyEntriesOf(Map.of(UPLOAD_ID, first.tipId()));
@@ -183,7 +183,7 @@ class TipCreateServiceTest {
 		SESSIONS.put(readyPhoto(AUTHOR, FilePurpose.TIP_PHOTO));
 		STATES.failNextSave();
 
-		assertThatThrownBy(() -> service.create(AUTHOR, command("좋아요", List.of(UPLOAD_ID), SPATIAL)))
+		assertThatThrownBy(() -> service.create(AUTHOR, null, command("좋아요", List.of(UPLOAD_ID), SPATIAL)))
 			.isInstanceOf(RedisConnectionFailureException.class);
 		assertThat(CLAIMS.claims).isEmpty();
 	}
@@ -204,7 +204,7 @@ class TipCreateServiceTest {
 		TipCreateCommand command = new TipCreateCommand(category, body.equals("LONG") ? "가".repeat(121) : body,
 			List.of(), locationAt(LAT, LNG), json(SPATIAL), json(PLACEMENT));
 
-		assertThatThrownBy(() -> service.create(AUTHOR, command))
+		assertThatThrownBy(() -> service.create(AUTHOR, null, command))
 			.extracting("exceptionType").extracting("code").isEqualTo(code);
 	}
 
@@ -230,13 +230,32 @@ class TipCreateServiceTest {
 
 	@Test
 	void 멱등키_재전송은_같은_tipId와_jobId를_준다() {
-		TipCreateResponse created = service.create(AUTHOR, command("좋아요", List.of(), SPATIAL));
+		TipCreateResponse created = service.create(AUTHOR, null, command("좋아요", List.of(), SPATIAL));
 
 		assertThat(service.getCreated(AUTHOR, created.tipId())).isEqualTo(created);
 	}
 
+	@Test
+	void 같은_요청_키로_다시_등록하면_새로_만들지_않고_처음_팁을_준다() {
+		TipCreateResponse first = service.create(AUTHOR, "key-1", command("좋아요", List.of(), SPATIAL));
+		TipCreateResponse again = service.create(AUTHOR, "key-1", command("좋아요", List.of(), SPATIAL));
+		TipCreateResponse other = service.create(AUTHOR, "key-2", command("좋아요", List.of(), SPATIAL));
+
+		assertThat(again).isEqualTo(first);
+		assertThat(other.tipId()).isNotEqualTo(first.tipId());
+		assertThat(em.find(ArTip.class, first.tipId()).getRequestKey()).isEqualTo("key-1");
+	}
+
+	@Test
+	void 요청_키가_없는_등록은_서로_막지_않는다() {
+		TipCreateResponse first = service.create(AUTHOR, null, command("좋아요", List.of(), SPATIAL));
+		TipCreateResponse second = service.create(AUTHOR, null, command("좋아요", List.of(), SPATIAL));
+
+		assertThat(second.tipId()).isNotEqualTo(first.tipId());
+	}
+
 	private void expect(TipCreateCommand command, ExceptionType type) {
-		assertThatThrownBy(() -> service.create(AUTHOR, command)).extracting("exceptionType").isEqualTo(type);
+		assertThatThrownBy(() -> service.create(AUTHOR, null, command)).extracting("exceptionType").isEqualTo(type);
 	}
 
 	private static TipCreateCommand command(String body, List<String> uploadIds, String spatial) {

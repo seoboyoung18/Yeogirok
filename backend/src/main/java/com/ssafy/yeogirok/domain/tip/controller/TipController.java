@@ -84,7 +84,7 @@ public class TipController {
 		TipCreateResponse response = idempotencyService.execute(
 			new IdempotencyKey(user.userId(), CREATE_SCOPE, "-", idempotencyKey),
 			command,
-			() -> tipCreateService.create(user.userId(), command),
+			() -> tipCreateService.create(user.userId(), idempotencyKey, command),
 			TipCreateResponse::tipId,
 			id -> tipCreateService.getCreated(user.userId(), Long.parseLong(id)));
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(ApiResponseUtil.createSuccessResponse(response));
