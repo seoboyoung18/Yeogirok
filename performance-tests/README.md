@@ -36,6 +36,7 @@ java -Xms1g -Xmx1g -jar build/libs/yeogirok-0.0.1-SNAPSHOT.jar
 | 발자취 동시성 | `python performance-tests/scripts/concurrency_footprint.py --label <이름> [--ports 18080,18081]` | `results/concurrency-<이름>.json` |
 | 멱등키 장애 상황 | `python performance-tests/scripts/idempotency_failures.py --label <이름>` (측정용 Redis 를 멈췄다 다시 띄운다, 약 5분) | `results/idempotency-<이름>.json` |
 | Redis 중단 중 지연 | `python performance-tests/scripts/redis_outage.py --label <이름>` (측정용 Redis 를 멈췄다 다시 띄운다) | `results/redis-outage-<이름>.json` |
+| 비동기 게시 종료·복구 | `python performance-tests/scripts/async_recovery.py --label <이름> --plan kill:50x3,stop40:500x3 --fast` (앱을 컨테이너로 띄운다. PC 에서 띄운 앱은 내려 둔다) | `results/async-recovery-<이름>.json` |
 
 - `bench_sql.py` 는 규모마다 시드를 다시 넣는다(기존 측정용 데이터는 지워진다).
 - `run_load.py` 는 지금 들어 있는 데이터로 잰다. 먼저 원하는 규모로 시드를 넣는다.
