@@ -1,0 +1,202 @@
+{
+ "1 정상 업로드(JPEG 100KB)": {
+  "발급": {
+   "status": 201,
+   "code": null,
+   "ms": 188,
+   "uploadStatus": "UPLOADING"
+  },
+  "PUT": 200,
+  "완료": {
+   "status": 200,
+   "code": null,
+   "ms": 502,
+   "uploadStatus": "READY"
+  },
+  "uploadId": "9feab97b-891d-43a0-a9cd-3d62923b3b22",
+  "ms": {
+   "발급": 188,
+   "PUT": 137,
+   "완료": 502
+  }
+ },
+ "1-1 확정 경로에 같은 내용이 있나": true,
+ "2 선언보다 1바이트 작은 파일": {
+  "발급": {
+   "status": 201,
+   "code": null,
+   "ms": 21,
+   "uploadStatus": "UPLOADING"
+  },
+  "PUT": 200,
+  "완료": {
+   "status": 422,
+   "code": "M003",
+   "ms": 40
+  },
+  "uploadId": "efb5b5ef-c6eb-47ce-9d9a-065f1b2d41fa",
+  "ms": {
+   "발급": 21,
+   "PUT": 11,
+   "완료": 40
+  }
+ },
+ "3 선언보다 1바이트 큰 파일": {
+  "발급": {
+   "status": 201,
+   "code": null,
+   "ms": 20,
+   "uploadStatus": "UPLOADING"
+  },
+  "PUT": 200,
+  "완료": {
+   "status": 422,
+   "code": "M003",
+   "ms": 46
+  },
+  "uploadId": "2684bc14-d3a6-4ff8-a9bb-cc2d47d20e3a",
+  "ms": {
+   "발급": 20,
+   "PUT": 12,
+   "완료": 46
+  }
+ },
+ "4 최대 크기(20MB) 그대로 발급": {
+  "status": 201,
+  "code": null,
+  "ms": 36,
+  "uploadStatus": "UPLOADING"
+ },
+ "5 최대 크기 + 1바이트 발급": {
+  "status": 413,
+  "code": "M001",
+  "ms": 13
+ },
+ "6 크기 0 발급": {
+  "status": 400,
+  "code": "C003",
+  "ms": 29
+ },
+ "7 허용하지 않는 형식(image/gif) 발급": {
+  "status": 415,
+  "code": "M002",
+  "ms": 34
+ },
+ "8 PNG 로 선언하고 JPEG 내용": {
+  "발급": {
+   "status": 201,
+   "code": null,
+   "ms": 21,
+   "uploadStatus": "UPLOADING"
+  },
+  "PUT": 200,
+  "완료": {
+   "status": 422,
+   "code": "M003",
+   "ms": 55
+  },
+  "uploadId": "90d23482-11f3-419f-a447-f95d73b2e273",
+  "ms": {
+   "발급": 21,
+   "PUT": 36,
+   "완료": 55
+  }
+ },
+ "9 JPEG 로 선언하고 글자 내용": {
+  "발급": {
+   "status": 201,
+   "code": null,
+   "ms": 35,
+   "uploadStatus": "UPLOADING"
+  },
+  "PUT": 200,
+  "완료": {
+   "status": 415,
+   "code": "M002",
+   "ms": 134
+  },
+  "uploadId": "42a45bd2-c818-4b17-b630-3593c83ba12c",
+  "ms": {
+   "발급": 35,
+   "PUT": 33,
+   "완료": 134
+  }
+ },
+ "10 PUT 없이 완료": {
+  "status": 422,
+  "code": "M006",
+  "ms": 94
+ },
+ "11 다른 회원이 완료 요청": {
+  "status": 403,
+  "code": "M005",
+  "ms": 26
+ },
+ "12 없는 uploadId 완료": {
+  "status": 404,
+  "code": "M004",
+  "ms": 12
+ },
+ "13 완료 뒤 같은 주소에 다른 파일 PUT": {
+  "처음 완료": {
+   "status": 200,
+   "code": null,
+   "ms": 66,
+   "uploadStatus": "READY"
+  },
+  "다시 PUT": 200,
+  "다시 완료": {
+   "status": 200,
+   "code": null,
+   "ms": 33,
+   "uploadStatus": "READY"
+  },
+  "확정본이 처음 내용 그대로인가": true
+ },
+ "13-1 완료된 업로드에 URL 재발급 요청 없이 새 발급은 다른 uploadId 인가": true,
+ "14 같은 업로드 완료 20건 동시": {
+  "응답": {
+   "200": 1,
+   "409 C018": 19
+  },
+  "확정본 수": 1
+ },
+ "15 크기별 단계 시간 중앙값(ms, 5회)": {
+  "100KB": {
+   "발급": 29,
+   "PUT": 20,
+   "완료": 73
+  },
+  "1MB": {
+   "발급": 33,
+   "PUT": 14,
+   "완료": 69
+  },
+  "5MB": {
+   "발급": 18,
+   "PUT": 54,
+   "완료": 64
+  },
+  "20MB": {
+   "발급": 24,
+   "PUT": 107,
+   "완료": 93
+  }
+ },
+ "16 20명 동시 1MB 업로드": {
+  "완료 응답": {
+   "200": 20
+  },
+  "전체 걸린 초": 0.22
+ },
+ "17 저장소에 남은 객체(임시 tmp/, 확정 tip-photo/)": {
+  "전": [
+   0,
+   0
+  ],
+  "후": [
+   48,
+   43
+  ]
+ }
+}

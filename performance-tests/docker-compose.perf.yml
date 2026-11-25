@@ -43,5 +43,16 @@ services:
       timeout: 3s
       retries: 30
 
+  # S3 호환 저장소(Adobe S3Mock). 실제 AWS 를 부르지 않고 파일 API·코스 적재를 돌릴 때 쓴다
+  # (앱에 YEOGIROK_FILE_ENDPOINT=http://localhost:59090, 자격 증명은 아무 값).
+  # MinIO 이미지는 Docker Hub·quay 에서 받을 수 없어(2026-11-25) 이것을 쓴다. 서명·만료를 검사하지 않는 점이 실제 S3 와 다르다.
+  # 데이터는 볼륨에 두지 않아 컨테이너를 지우면 사라진다.
+  s3:
+    image: adobe/s3mock:latest
+    environment:
+      COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS: perf-photos,perf-receipts
+    ports:
+      - "59090:9090"
+
 volumes:
   db-perf:
