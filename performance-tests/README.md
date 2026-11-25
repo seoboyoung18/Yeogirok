@@ -30,6 +30,7 @@ java -Xms1g -Xmx1g -jar build/libs/yeogirok-0.0.1-SNAPSHOT.jar
 | 시드만 넣기 | `docker exec -i yeogirok-perf-db-1 psql -U perf -d yeogirok_perf -q -v n=100000 < performance-tests/fixtures/seed-footprints-tips.sql` | 발자취·팁 n건, 회원 n/20명 |
 | SQL 규모별 측정 | `python performance-tests/scripts/bench_sql.py --label <이름>` | `results/sql-<이름>.json`, `-plans.txt` |
 | k6 부하 측정 | `python performance-tests/scripts/run_load.py --label <이름> --users <시드 회원 수>` | `results/load-<이름>.json` |
+| 발자취 동시성 | `python performance-tests/scripts/concurrency_footprint.py --label <이름> [--ports 18080,18081]` | `results/concurrency-<이름>.json` |
 
 - `bench_sql.py` 는 규모마다 시드를 다시 넣는다(기존 측정용 데이터는 지워진다).
 - `run_load.py` 는 지금 들어 있는 데이터로 잰다. 먼저 원하는 규모로 시드를 넣는다.

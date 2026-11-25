@@ -1,0 +1,471 @@
+{
+ "label": "no-lock",
+ "ports": [
+  18082
+ ],
+ "repeats": 3,
+ "scenarios": {
+  "같은 사용자·같은 위치 5건": [
+   {
+    "outcome": {
+     "201": 5
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 1082.6,
+    "p95_ms": 1082.7,
+    "max_ms": 1083.1,
+    "rows_saved": 5
+   },
+   {
+    "outcome": {
+     "409 F003": 1,
+     "201": 4
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 34.4,
+    "p95_ms": 34.6,
+    "max_ms": 56.1,
+    "rows_saved": 4
+   },
+   {
+    "outcome": {
+     "201": 4,
+     "409 F003": 1
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 29.7,
+    "p95_ms": 30.3,
+    "max_ms": 44.2,
+    "rows_saved": 4
+   }
+  ],
+  "같은 사용자·같은 위치 10건": [
+   {
+    "outcome": {
+     "201": 8,
+     "409 F003": 2
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 35.0,
+    "p95_ms": 41.0,
+    "max_ms": 43.3,
+    "rows_saved": 8
+   },
+   {
+    "outcome": {
+     "201": 8,
+     "409 F003": 2
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 36.7,
+    "p95_ms": 48.1,
+    "max_ms": 48.4,
+    "rows_saved": 8
+   },
+   {
+    "outcome": {
+     "409 F003": 3,
+     "201": 7
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 34.4,
+    "p95_ms": 41.7,
+    "max_ms": 41.8,
+    "rows_saved": 7
+   }
+  ],
+  "같은 사용자·같은 위치 50건": [
+   {
+    "outcome": {
+     "409 F003": 45,
+     "201": 5
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 106.2,
+    "p95_ms": 127.7,
+    "max_ms": 130.6,
+    "rows_saved": 5
+   },
+   {
+    "outcome": {
+     "201": 4,
+     "409 F003": 46
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 92.5,
+    "p95_ms": 104.4,
+    "max_ms": 109.7,
+    "rows_saved": 4
+   },
+   {
+    "outcome": {
+     "409 F003": 45,
+     "201": 5
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 81.0,
+    "p95_ms": 96.9,
+    "max_ms": 99.9,
+    "rows_saved": 5
+   }
+  ],
+  "같은 사용자·같은 위치 100건": [
+   {
+    "outcome": {
+     "409 F003": 96,
+     "201": 4
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 121.2,
+    "p95_ms": 170.4,
+    "max_ms": 175.2,
+    "rows_saved": 4
+   },
+   {
+    "outcome": {
+     "201": 4,
+     "409 F003": 96
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 121.2,
+    "p95_ms": 162.3,
+    "max_ms": 167.9,
+    "rows_saved": 4
+   },
+   {
+    "outcome": {
+     "201": 6,
+     "409 F003": 94
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 118.7,
+    "p95_ms": 160.6,
+    "max_ms": 166.8,
+    "rows_saved": 6
+   }
+  ],
+  "같은 사용자·같은 위치 200건": [
+   {
+    "outcome": {
+     "409 F003": 195,
+     "201": 5
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 218.7,
+    "p95_ms": 310.8,
+    "max_ms": 326.6,
+    "rows_saved": 5
+   },
+   {
+    "outcome": {
+     "409 F003": 196,
+     "201": 4
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 238.2,
+    "p95_ms": 351.2,
+    "max_ms": 374.5,
+    "rows_saved": 4
+   },
+   {
+    "outcome": {
+     "409 F003": 195,
+     "201": 5
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 224.7,
+    "p95_ms": 326.3,
+    "max_ms": 363.6,
+    "rows_saved": 5
+   }
+  ],
+  "같은 사용자·같은 위치 500건": [
+   {
+    "outcome": {
+     "409 F003": 490,
+     "201": 10
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 533.4,
+    "p95_ms": 870.8,
+    "max_ms": 920.6,
+    "rows_saved": 10
+   },
+   {
+    "outcome": {
+     "409 F003": 493,
+     "201": 7
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 691.9,
+    "p95_ms": 950.5,
+    "max_ms": 1004.6,
+    "rows_saved": 7
+   },
+   {
+    "outcome": {
+     "409 F003": 492,
+     "201": 8
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 896.9,
+    "p95_ms": 1347.5,
+    "max_ms": 1427.6,
+    "rows_saved": 8
+   }
+  ],
+  "같은 사용자·10m 간격 50건(모두 500m 안)": [
+   {
+    "outcome": {
+     "201": 2,
+     "409 F003": 48
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 123.2,
+    "p95_ms": 161.1,
+    "max_ms": 163.4,
+    "rows_saved": 2
+   },
+   {
+    "outcome": {
+     "409 F003": 47,
+     "201": 3
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 64.4,
+    "p95_ms": 78.5,
+    "max_ms": 84.7,
+    "rows_saved": 3
+   },
+   {
+    "outcome": {
+     "201": 2,
+     "409 F003": 48
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 113.0,
+    "p95_ms": 161.7,
+    "max_ms": 166.5,
+    "rows_saved": 2
+   }
+  ],
+  "같은 사용자·600m 간격 50건(모두 500m 밖)": [
+   {
+    "outcome": {
+     "201": 50
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 110.4,
+    "p95_ms": 145.3,
+    "max_ms": 147.9,
+    "rows_saved": 50
+   },
+   {
+    "outcome": {
+     "201": 50
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 109.3,
+    "p95_ms": 145.8,
+    "max_ms": 153.3,
+    "rows_saved": 50
+   },
+   {
+    "outcome": {
+     "201": 50
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 105.7,
+    "p95_ms": 137.6,
+    "max_ms": 153.5,
+    "rows_saved": 50
+   }
+  ],
+  "서로 다른 사용자 50명·같은 위치": [
+   {
+    "outcome": {
+     "201": 50
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 90.8,
+    "p95_ms": 116.4,
+    "max_ms": 121.1,
+    "rows_saved": 50
+   },
+   {
+    "outcome": {
+     "201": 50
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 90.2,
+    "p95_ms": 124.2,
+    "max_ms": 135.4,
+    "rows_saved": 50
+   },
+   {
+    "outcome": {
+     "201": 50
+    },
+    "server_error_5xx": 0,
+    "connection_failed": 0,
+    "p50_ms": 79.0,
+    "p95_ms": 103.7,
+    "max_ms": 106.3,
+    "rows_saved": 50
+   }
+  ],
+  "저장 20건 + 삭제 1건 동시": [
+   {
+    "creates": {
+     "outcome": {
+      "409 F003": 20
+     },
+     "server_error_5xx": 0,
+     "connection_failed": 0,
+     "p50_ms": 43.7,
+     "p95_ms": 51.2,
+     "max_ms": 51.9
+    },
+    "delete": {
+     "200": 1
+    },
+    "rows_saved": 0
+   },
+   {
+    "creates": {
+     "outcome": {
+      "409 F003": 14,
+      "201": 6
+     },
+     "server_error_5xx": 0,
+     "connection_failed": 0,
+     "p50_ms": 43.9,
+     "p95_ms": 47.7,
+     "max_ms": 57.9
+    },
+    "delete": {
+     "200": 1
+    },
+    "rows_saved": 6
+   },
+   {
+    "creates": {
+     "outcome": {
+      "201": 5,
+      "409 F003": 15
+     },
+     "server_error_5xx": 0,
+     "connection_failed": 0,
+     "p50_ms": 42.8,
+     "p95_ms": 54.8,
+     "max_ms": 56.1
+    },
+    "delete": {
+     "200": 1
+    },
+    "rows_saved": 5
+   }
+  ],
+  "같은 사용자 200건 중 다른 회원 조회 20건": [
+   {
+    "writer": {
+     "outcome": {
+      "409 F003": 196,
+      "201": 4
+     },
+     "server_error_5xx": 0,
+     "connection_failed": 0,
+     "p50_ms": 316.0,
+     "p95_ms": 454.8,
+     "max_ms": 485.5
+    },
+    "bystander_reads": {
+     "outcome": {
+      "200": 20
+     },
+     "server_error_5xx": 0,
+     "connection_failed": 0,
+     "p50_ms": 360.9,
+     "p95_ms": 449.6,
+     "max_ms": 484.5
+    },
+    "rows_saved": 4
+   },
+   {
+    "writer": {
+     "outcome": {
+      "409 F003": 196,
+      "201": 4
+     },
+     "server_error_5xx": 0,
+     "connection_failed": 0,
+     "p50_ms": 249.1,
+     "p95_ms": 333.5,
+     "max_ms": 363.3
+    },
+    "bystander_reads": {
+     "outcome": {
+      "200": 20
+     },
+     "server_error_5xx": 0,
+     "connection_failed": 0,
+     "p50_ms": 286.0,
+     "p95_ms": 323.8,
+     "max_ms": 336.9
+    },
+    "rows_saved": 4
+   },
+   {
+    "writer": {
+     "outcome": {
+      "201": 8,
+      "409 F003": 192
+     },
+     "server_error_5xx": 0,
+     "connection_failed": 0,
+     "p50_ms": 224.5,
+     "p95_ms": 308.1,
+     "max_ms": 322.3
+    },
+    "bystander_reads": {
+     "outcome": {
+      "200": 20
+     },
+     "server_error_5xx": 0,
+     "connection_failed": 0,
+     "p50_ms": 232.7,
+     "p95_ms": 305.2,
+     "max_ms": 307.1
+    },
+    "rows_saved": 8
+   }
+  ]
+ },
+ "deadlocks": 0
+}
