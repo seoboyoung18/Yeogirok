@@ -80,6 +80,8 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	// 기본 힙으로는 전체 테스트(2,100여 개)가 끝나기 전에 Java heap space 로 멈춘다.
+	maxHeapSize = '2g'
 	testLogging {
 		exceptionFormat = 'full'
 	}
