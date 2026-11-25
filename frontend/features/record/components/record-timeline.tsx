@@ -291,11 +291,6 @@ export function RecordTimeline({ record, editing, onBack, onEdit, onOpenPublicat
   </RecordFrame>;
 }
 
-function RecordMetric({ count, label, unit }: { count: number; label: string; unit: string }) {
-  return <View className="flex-1 gap-1 rounded-md bg-muted p-3"><Text className="text-h3">{count}{unit}</Text>
-    <Text className="text-caption text-foreground-secondary">{label}</Text></View>;
-}
-
 function TimelinePanel({ record, panel, day, onBack }: {
   record: RecordDetail; panel: Panel; day?: string; onBack: () => void;
 }) {
