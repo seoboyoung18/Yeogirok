@@ -1,0 +1,4 @@
+# 측정용 비밀값과 용량이 큰 원본 결과는 올리지 않는다.
+.env.perf
+results/raw*
+__pycache__/

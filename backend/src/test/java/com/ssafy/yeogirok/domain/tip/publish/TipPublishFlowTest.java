@@ -95,7 +95,7 @@ class TipPublishFlowTest {
 	@Test
 	@Transactional(propagation = Propagation.NOT_SUPPORTED)
 	void 등록하면_커밋_뒤_비동기로_게시돼_주변_탐색에_보인다() throws Exception {
-		TipCreateResponse created = createService.create(5001L, new TipCreateCommand("TIP", "줄 서는 곳은 왼쪽",
+		TipCreateResponse created = createService.create(5001L, null, new TipCreateCommand("TIP", "줄 서는 곳은 왼쪽",
 			List.of(), locationAt(LAT, LNG),
 			MAPPER.readTree("{\"provider\":\"ARCORE_CLOUD_ANCHOR\",\"referenceId\":\"a\",\"expiresAt\":\"2026-11-09 12:00:00+09\"}"),
 			MAPPER.readTree("{\"schemaVersion\":1}")));

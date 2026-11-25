@@ -33,6 +33,7 @@ class ArTipRepositoryTest {
 		assertThat(nullable("ar_tips")).isEqualTo(Map.ofEntries(
 			Map.entry("id", false),
 			Map.entry("author_id", false),
+			Map.entry("request_key", true),
 			Map.entry("category_code", false),
 			Map.entry("body", false),
 			Map.entry("latitude", false),

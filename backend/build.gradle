@@ -22,6 +22,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.0'
+	// 지표(커넥션 풀·GC·요청 시간). 기본으로는 /actuator/health 만 열리고, 지표는 perf 프로필에서만 연다(application-perf.yaml).
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 	// 채팅(API-077): STOMP 없이 노션의 JSON 프레임 계약을 그대로 주고받는 WebSocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 

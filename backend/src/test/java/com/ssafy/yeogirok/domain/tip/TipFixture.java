@@ -45,7 +45,7 @@ public final class TipFixture {
 
 	private static ArTip registeringAt(Long authorId, ArTipCategory category, LocationEvidence location,
 		Instant createdAt) {
-		return ArTip.register(authorId, category, "창가 자리가 좋아요", location, "test-v1",
+		return ArTip.register(authorId, null, category, "창가 자리가 좋아요", location, "test-v1",
 			new SpatialReference(SpatialReference.PROVIDER, "anchor-1", NOW.plusSeconds(86_400)),
 			Map.of("schemaVersion", 1, "anchorType", "CLOUD", "authorizationMode", "KEYLESS"), createdAt);
 	}

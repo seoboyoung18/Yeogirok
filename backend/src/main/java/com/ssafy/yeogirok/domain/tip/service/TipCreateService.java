@@ -1,5 +1,7 @@
 package com.ssafy.yeogirok.domain.tip.service;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import java.util.Optional;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Map;
@@ -60,7 +62,20 @@ public class TipCreateService {
 		this.clock = clock;
 	}
 
-	public TipCreateResponse create(Long userId, TipCreateCommand command) {
+	/** request_key 열 길이. 이보다 긴 멱등키는 DB 에 남기지 않는다(Redis 멱등 처리만 받는다). */
+	private static final int REQUEST_KEY_MAX_LENGTH = 255;
+
+	/**
+	 * @param idempotencyKey 등록 요청의 Idempotency-Key. Redis 멱등 기록이 없어 여기까지 다시 들어온 같은 요청은
+	 *                       새로 만들지 않고 처음 만든 팁을 돌려준다(docs/engineering/07-idempotency-test.md 문제 A)
+	 */
+	public TipCreateResponse create(Long userId, String idempotencyKey, TipCreateCommand command) {
+		String requestKey = idempotencyKey == null || idempotencyKey.length() > REQUEST_KEY_MAX_LENGTH
+			? null : idempotencyKey;
+		Optional<TipCreateResponse> existing = findCreated(userId, requestKey);
+		if (existing.isPresent()) {
+			return existing.get();
+		}
 		Instant now = clock.instant();
 		locationEvidencePolicy.verify(command.location(), now);
 		ArTipCategory category = ArTipCategory.fromCode(command.category());
@@ -73,7 +88,7 @@ public class TipCreateService {
 		AtomicReference<Long> claimedBy = new AtomicReference<>();
 		try {
 			Long tipId = transactionTemplate.execute(status -> {
-				ArTip tip = arTipRepository.save(ArTip.register(userId, category, body, command.location(),
+				ArTip tip = arTipRepository.saveAndFlush(ArTip.register(userId, requestKey, category, body, command.location(),
 					locationEvidencePolicy.policyVersion(), spatialReference, placement, now));
 				if (tipPhotoClaims.claim(tip.getId(), command.uploadIds())) {
 					claimedBy.set(tip.getId());
@@ -84,12 +99,23 @@ public class TipCreateService {
 				return tip.getId();
 			});
 			return new TipCreateResponse(tipId, jobId, TipStatus.REGISTERING);
+		} catch (DataIntegrityViolationException e) {
+			// 같은 요청 키의 두 요청이 겹쳐 유일 제약에 걸린 경우 먼저 들어간 팁을 돌려준다. 다른 제약 위반이면 그대로 던진다.
+			return findCreated(userId, requestKey).orElseThrow(() -> e);
 		} catch (RuntimeException e) {
 			if (claimedBy.get() != null) {
 				tipPhotoClaims.release(claimedBy.get(), command.uploadIds());
 			}
 			throw e;
 		}
+	}
+
+	private Optional<TipCreateResponse> findCreated(Long userId, String requestKey) {
+		if (requestKey == null) {
+			return Optional.empty();
+		}
+		return arTipRepository.findByAuthorIdAndRequestKey(userId, requestKey)
+			.map(tip -> getCreated(userId, tip.getId()));
 	}
 
 	/** 같은 멱등키로 다시 보낸 요청. 그사이 삭제했으면 T012. */

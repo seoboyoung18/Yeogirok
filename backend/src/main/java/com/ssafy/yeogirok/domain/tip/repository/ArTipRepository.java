@@ -20,6 +20,9 @@ import jakarta.persistence.LockModeType;
 
 public interface ArTipRepository extends JpaRepository<ArTip, Long> {
 
+	/** API-049. 같은 작성자가 같은 요청 키로 이미 등록한 팁(삭제한 것 포함). */
+	Optional<ArTip> findByAuthorIdAndRequestKey(Long authorId, String requestKey);
+
 	Optional<ArTip> findByIdAndStatusAndDeletedAtIsNull(Long id, TipStatus status);
 
 	Optional<ArTip> findByIdAndDeletedAtIsNull(Long id);
