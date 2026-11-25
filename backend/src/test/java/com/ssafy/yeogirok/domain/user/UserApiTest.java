@@ -1,0 +1,453 @@
+package com.ssafy.yeogirok.domain.user;
+
+import static com.ssafy.yeogirok.domain.footprint.FootprintFixture.footprintOf;
+import static com.ssafy.yeogirok.domain.tip.TipFixture.publish;
+import static com.ssafy.yeogirok.domain.tip.TipFixture.registeringAt;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+
+import com.ssafy.yeogirok.domain.footprint.entity.Footprint;
+import com.ssafy.yeogirok.domain.footprint.repository.FootprintRepository;
+import com.ssafy.yeogirok.domain.tip.entity.ArTip;
+import com.ssafy.yeogirok.domain.tip.repository.ArTipRepository;
+import com.ssafy.yeogirok.domain.user.unlink.ProviderUnlinkService;
+import com.ssafy.yeogirok.domain.user.unlink.ProviderUnlinkTaskStore;
+import com.ssafy.yeogirok.support.FakeGoogleOAuthClient;
+import com.ssafy.yeogirok.support.FakeKakaoUnlinkClient;
+import com.ssafy.yeogirok.support.MutableClock;
+import com.ssafy.yeogirok.support.TestAuthConfig;
+import com.ssafy.yeogirok.support.TestIdTokens;
+import com.ssafy.yeogirok.support.TestWithdrawalConfig;
+
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+@Import({TestAuthConfig.class, TestWithdrawalConfig.class})
+class UserApiTest {
+
+	@Autowired
+	MockMvc mockMvc;
+	@Autowired
+	JsonMapper jsonMapper;
+	@Autowired
+	TestIdTokens idTokens;
+	@Autowired
+	MutableClock clock;
+	@Autowired
+	FakeKakaoUnlinkClient kakaoUnlinkClient;
+	@Autowired
+	FakeGoogleOAuthClient googleOAuthClient;
+	@Autowired
+	ProviderUnlinkService providerUnlinkService;
+	@Autowired
+	ProviderUnlinkTaskStore unlinkTaskStore;
+	@Autowired
+	FootprintRepository footprintRepository;
+	@Autowired
+	ArTipRepository arTipRepository;
+	@Autowired
+	JdbcTemplate jdbc;
+
+	@Autowired
+	StringRedisTemplate redis;
+
+	@BeforeEach
+	void reset() {
+		// 탈퇴 표시(auth:withdrawn:{회원번호})는 Redis 에 토큰 수명만큼 남는데, 테스트 컨텍스트마다 DB 의 회원 번호는 다시 1부터라
+		// 앞 테스트에서 탈퇴한 번호를 받은 새 회원이 A003 으로 막힐 수 있다(테스트 순서에 따라 실패).
+		redis.delete(redis.keys("auth:withdrawn:*"));
+		clock.set(TestAuthConfig.START);
+		kakaoUnlinkClient.reset();
+		googleOAuthClient.reset();
+	}
+
+	/* ── 헬퍼 ─────────────────────────────────────────────────── */
+
+	private JsonNode login(String provider, String idToken) throws Exception {
+		ResultActions result = mockMvc.perform(post("/api/v1/auth/token").contentType(MediaType.APPLICATION_JSON)
+				.content("{\"provider\": \"%s\", \"idToken\": \"%s\", \"nonce\": \"%s\"}".formatted(provider, idToken,
+					TestIdTokens.NONCE)))
+			.andExpect(status().isOk());
+		return jsonMapper.readTree(result.andReturn().getResponse().getContentAsString()).get("data");
+	}
+
+	private ResultActions getMe(String accessToken) throws Exception {
+		var request = get("/api/v1/users/me");
+		if (accessToken != null) {
+			request.header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+		}
+		return mockMvc.perform(request);
+	}
+
+	private ResultActions withdraw(String accessToken) throws Exception {
+		return withdraw(accessToken, null);
+	}
+
+	private ResultActions withdraw(String accessToken, String googleAuthCode) throws Exception {
+		var request = delete("/api/v1/users/me");
+		if (accessToken != null) {
+			request.header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
+		}
+		if (googleAuthCode != null) {
+			request.contentType(MediaType.APPLICATION_JSON).content("{\"googleAuthCode\": \"%s\"}".formatted(googleAuthCode));
+		}
+		return mockMvc.perform(request);
+	}
+
+	/** 구글 회원 탈퇴용 serverAuthCode 를 등록한다. 교환하면 그 sub 의 ID 토큰이 나온다. */
+	private String googleAuthCodeFor(String sub) {
+		String code = "code-" + uniqueSub();
+		googleOAuthClient.register(code, idTokens.google(sub, clock.instant()));
+		return code;
+	}
+
+	private ResultActions refresh(String refreshToken) throws Exception {
+		return mockMvc.perform(post("/api/v1/auth/token/refresh").contentType(MediaType.APPLICATION_JSON)
+			.content("{\"refreshToken\": \"%s\"}".formatted(refreshToken)));
+	}
+
+	private static String uniqueSub() {
+		return UUID.randomUUID().toString();
+	}
+
+	/* ── API-008 ──────────────────────────────────────────────── */
+
+	@Nested
+	class 내_계정_정보_조회 {
+
+		@Test
+		void 로그인한_회원의_정보를_돌려준다() throws Exception {
+			String sub = uniqueSub();
+			JsonNode tokens = login("google", idTokens.google(sub, clock.instant()));
+
+			getMe(tokens.get("accessToken").asString())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.success").value(true))
+				.andExpect(jsonPath("$.data.id").isNumber())
+				.andExpect(jsonPath("$.data.nickname").value("닉네임-" + sub))
+				.andExpect(jsonPath("$.data.profileImageUrl").value("https://example.com/p.png"))
+				.andExpect(jsonPath("$.data.activityCounts.footprints").value(0))
+				.andExpect(jsonPath("$.data.activityCounts.tips").value(0))
+				.andExpect(jsonPath("$.data.loginProviders[0]").value("google"))
+				.andExpect(jsonPath("$.data.loginProviders.length()").value(1));
+		}
+
+		@Test
+		void activityCounts_는_삭제하지_않은_발자취와_내_팁_목록의_팁을_센다() throws Exception {
+			String accessToken = login("google", idTokens.google(uniqueSub(), clock.instant()))
+				.get("accessToken").asString();
+			Long userId = jsonMapper.readTree(getMe(accessToken).andReturn().getResponse().getContentAsString())
+				.get("data").get("id").asLong();
+			Instant now = clock.instant();
+
+			Footprint deletedFootprint = footprintOf(userId).build();
+			deletedFootprint.softDelete(now);
+			ArTip failedTip = registeringAt(userId, now);
+			failedTip.fail(now);
+			ArTip deletedTip = registeringAt(userId, now);
+			deletedTip.delete(now);
+			List<Footprint> footprints = footprintRepository.saveAll(
+				List.of(footprintOf(userId).build(), footprintOf(userId).build(), deletedFootprint,
+					footprintOf(userId + 1_000_000).build()));
+			List<ArTip> tips = arTipRepository.saveAll(
+				List.of(registeringAt(userId, now), publish(registeringAt(userId, now)), failedTip, deletedTip,
+					publish(registeringAt(userId + 1_000_000, now))));
+			try {
+				getMe(accessToken)
+					.andExpect(status().isOk())
+					.andExpect(jsonPath("$.data.activityCounts.footprints").value(2))
+					.andExpect(jsonPath("$.data.activityCounts.tips").value(3));
+			} finally {
+				// 스프링 컨텍스트를 함께 쓰는 다른 테스트의 집계에 섞이지 않게 지운다.
+				arTipRepository.deleteAll(tips);
+				footprintRepository.deleteAll(footprints);
+			}
+		}
+
+		@Test
+		void 카카오_회원은_loginProviders_가_kakao() throws Exception {
+			JsonNode tokens = login("kakao", idTokens.kakao(uniqueSub(), clock.instant()));
+
+			getMe(tokens.get("accessToken").asString())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.data.loginProviders[0]").value("kakao"));
+		}
+
+		@Test
+		void 액세스_토큰이_없으면_A001() throws Exception {
+			getMe(null)
+				.andExpect(status().isUnauthorized())
+				.andExpect(jsonPath("$.success").value(false))
+				.andExpect(jsonPath("$.code").value("A001"));
+		}
+	}
+
+	/* ── API-009 ──────────────────────────────────────────────── */
+
+	@Nested
+	class 회원_탈퇴 {
+
+		@Test
+		void 탈퇴하면_발자취를_방문_분포_보존분으로_옮기고_원본을_지운다() throws Exception {
+			String accessToken = login("kakao", idTokens.kakao(uniqueSub(), clock.instant()))
+				.get("accessToken").asString();
+			Long userId = jsonMapper.readTree(getMe(accessToken).andReturn().getResponse().getContentAsString())
+				.get("data").get("id").asLong();
+			// 다른 테스트와 겹치지 않는 칸(위도 -10도 근처)에 둔다.
+			footprintRepository.save(footprintOf(userId).latitude(new BigDecimal("-10.0012345"))
+				.longitude(new BigDecimal("-20.0012345")).categoryCodes(List.of("FOOD", "CAFE")).build());
+			try {
+				withdraw(accessToken).andExpect(status().isOk());
+
+				assertThat(jdbc.queryForObject("SELECT count(*) FROM footprints WHERE user_id = ?", Long.class, userId))
+					.isZero();
+				// application-test.yaml 의 기본 셀 0.005도: floor(-10.0012345 / 0.005) = -2001, floor(-20.0012345 / 0.005) = -4001
+				assertThat(jdbc.queryForList("SELECT visit_count, CAST(category_codes AS VARCHAR) AS codes"
+					+ " FROM footprint_statistics WHERE cell_id = '-2001:-4001'"))
+					.singleElement()
+					.satisfies(row -> {
+						assertThat(((Number)row.get("visit_count")).longValue()).isEqualTo(1);
+						assertThat((String)row.get("codes")).contains("CAFE").contains("FOOD");
+					});
+			} finally {
+				// 탈퇴가 실패해도 공용 DB 에 이 테스트의 행이 남지 않게 지운다.
+				jdbc.update("DELETE FROM footprints WHERE user_id = ?", userId);
+				jdbc.update("DELETE FROM footprint_statistics WHERE cell_id = '-2001:-4001'");
+			}
+		}
+
+		@Test
+		void 탈퇴하면_withdrawn_과_QUEUED_를_돌려주고_카카오_연결을_끊는다() throws Exception {
+			String sub = uniqueSub();
+			JsonNode tokens = login("kakao", idTokens.kakao(sub, clock.instant()));
+
+			withdraw(tokens.get("accessToken").asString())
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.success").value(true))
+				.andExpect(jsonPath("$.data.withdrawn").value(true))
+				.andExpect(jsonPath("$.data.dataCleanupStatus").value("QUEUED"));
+
+			assertThat(kakaoUnlinkClient.unlinked()).containsExactly(sub);
+		}
+
+		@Test
+		void 탈퇴_후_남은_액세스_토큰은_회원을_조회하지_않는_API_에서도_A003() throws Exception {
+			JsonNode tokens = login("kakao", idTokens.kakao(uniqueSub(), clock.instant()));
+			String accessToken = tokens.get("accessToken").asString();
+			withdraw(accessToken).andExpect(status().isOk());
+
+			// 로그아웃(API-007)은 회원을 조회하지 않는다. JWT 검증 단계에서 막혀야 한다.
+			mockMvc.perform(post("/api/v1/auth/logout").header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+					.contentType(MediaType.APPLICATION_JSON)
+					.content("{\"refreshToken\": \"%s\"}".formatted(tokens.get("refreshToken").asString())))
+				.andExpect(status().isUnauthorized())
+				.andExpect(jsonPath("$.code").value("A003"));
+		}
+
+		@Test
+		void 같은_회원의_탈퇴가_동시에_와도_한_번만_탈퇴하고_연결도_한_번만_끊는다() throws Exception {
+			String sub = uniqueSub();
+			String accessToken = login("kakao", idTokens.kakao(sub, clock.instant())).get("accessToken").asString();
+			int requests = 3;
+			ExecutorService executor = Executors.newFixedThreadPool(requests);
+			CountDownLatch start = new CountDownLatch(1);
+			try {
+				List<Future<Integer>> results = new ArrayList<>();
+				for (int i = 0; i < requests; i++) {
+					results.add(executor.submit(() -> {
+						start.await();
+						return withdraw(accessToken).andReturn().getResponse().getStatus();
+					}));
+				}
+				start.countDown();
+
+				List<Integer> statuses = new ArrayList<>();
+				for (Future<Integer> result : results) {
+					statuses.add(result.get());
+				}
+				assertThat(statuses).containsOnlyOnce(200);
+				assertThat(kakaoUnlinkClient.unlinked()).containsExactly(sub);
+			} finally {
+				executor.shutdownNow();
+			}
+		}
+
+		@Test
+		void 탈퇴하면_모든_기기의_리프레시_토큰이_A009() throws Exception {
+			String sub = uniqueSub();
+			JsonNode phone = login("kakao", idTokens.kakao(sub, clock.instant()));
+			JsonNode tablet = login("kakao", idTokens.kakao(sub, clock.instant()));
+
+			withdraw(phone.get("accessToken").asString()).andExpect(status().isOk());
+
+			refresh(phone.get("refreshToken").asString()).andExpect(jsonPath("$.code").value("A009"));
+			refresh(tablet.get("refreshToken").asString()).andExpect(jsonPath("$.code").value("A009"));
+		}
+
+		@Test
+		void 탈퇴_후_남은_액세스_토큰으로_내_정보를_조회하면_A003() throws Exception {
+			String accessToken = login("kakao", idTokens.kakao(uniqueSub(), clock.instant()))
+				.get("accessToken").asString();
+
+			withdraw(accessToken).andExpect(status().isOk());
+
+			getMe(accessToken).andExpect(status().isUnauthorized()).andExpect(jsonPath("$.code").value("A003"));
+			withdraw(accessToken).andExpect(status().isUnauthorized()).andExpect(jsonPath("$.code").value("A003"));
+		}
+
+		@Test
+		void 같은_계정으로_다시_로그인하면_새_회원으로_가입된다() throws Exception {
+			String sub = uniqueSub();
+			JsonNode before = login("kakao", idTokens.kakao(sub, clock.instant()));
+			long beforeId = data(getMe(before.get("accessToken").asString())).get("id").asLong();
+
+			withdraw(before.get("accessToken").asString()).andExpect(status().isOk());
+			JsonNode after = login("kakao", idTokens.kakao(sub, clock.instant()));
+
+			assertThat(after.get("isNewUser").asBoolean()).isTrue();
+			assertThat(data(getMe(after.get("accessToken").asString())).get("id").asLong()).isNotEqualTo(beforeId);
+		}
+
+		/* 최근 재인증(A011) */
+
+		@Test
+		void 재발급받은_액세스_토큰으로는_탈퇴할_수_없다_A011() throws Exception {
+			JsonNode tokens = login("kakao", idTokens.kakao(uniqueSub(), clock.instant()));
+			JsonNode refreshed = data(refresh(tokens.get("refreshToken").asString()).andExpect(status().isOk()));
+
+			withdraw(refreshed.get("accessToken").asString())
+				.andExpect(status().isUnauthorized())
+				.andExpect(jsonPath("$.code").value("A011"));
+		}
+
+		@Test
+		void 로그인하고_5분이_지나면_A011_이고_다시_로그인하면_탈퇴된다() throws Exception {
+			String sub = uniqueSub();
+			JsonNode first = login("kakao", idTokens.kakao(sub, clock.instant()));
+			clock.advance(Duration.ofMinutes(5).plusSeconds(1));
+
+			withdraw(first.get("accessToken").asString())
+				.andExpect(status().isUnauthorized())
+				.andExpect(jsonPath("$.code").value("A011"));
+			getMe(first.get("accessToken").asString()).andExpect(status().isOk());
+
+			JsonNode again = login("kakao", idTokens.kakao(sub, clock.instant()));
+			withdraw(again.get("accessToken").asString()).andExpect(status().isOk());
+		}
+
+		/* 구글 */
+
+		@Test
+		void 구글_회원은_googleAuthCode_로_받은_토큰으로_연결을_해제한다() throws Exception {
+			String sub = uniqueSub();
+			JsonNode tokens = login("google", idTokens.google(sub, clock.instant()));
+			String code = googleAuthCodeFor(sub);
+
+			withdraw(tokens.get("accessToken").asString(), code)
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.data.withdrawn").value(true));
+
+			assertThat(googleOAuthClient.revoked()).containsExactly("refresh-" + code);
+			assertThat(kakaoUnlinkClient.unlinked()).isEmpty();
+		}
+
+		@Test
+		void 구글_회원이_googleAuthCode_없이_탈퇴하면_C001_이고_탈퇴되지_않는다() throws Exception {
+			String accessToken = login("google", idTokens.google(uniqueSub(), clock.instant()))
+				.get("accessToken").asString();
+
+			withdraw(accessToken).andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("C001"));
+			getMe(accessToken).andExpect(status().isOk());
+		}
+
+		@Test
+		void 교환할_수_없는_googleAuthCode_면_A029_이고_탈퇴되지_않는다() throws Exception {
+			String accessToken = login("google", idTokens.google(uniqueSub(), clock.instant()))
+				.get("accessToken").asString();
+
+			withdraw(accessToken, "unknown-code")
+				.andExpect(status().isUnauthorized())
+				.andExpect(jsonPath("$.code").value("A029"));
+			getMe(accessToken).andExpect(status().isOk());
+		}
+
+		@Test
+		void 다른_구글_계정의_googleAuthCode_면_A029() throws Exception {
+			String accessToken = login("google", idTokens.google(uniqueSub(), clock.instant()))
+				.get("accessToken").asString();
+
+			withdraw(accessToken, googleAuthCodeFor(uniqueSub()))
+				.andExpect(status().isUnauthorized())
+				.andExpect(jsonPath("$.code").value("A029"));
+			assertThat(googleOAuthClient.revoked()).isEmpty();
+		}
+
+		@Test
+		void 구글_해제가_실패해도_탈퇴는_성공한다() throws Exception {
+			String sub = uniqueSub();
+			String accessToken = login("google", idTokens.google(sub, clock.instant())).get("accessToken").asString();
+			googleOAuthClient.failingRevoke(true);
+
+			withdraw(accessToken, googleAuthCodeFor(sub)).andExpect(status().isOk());
+			getMe(accessToken).andExpect(jsonPath("$.code").value("A003"));
+		}
+
+		@Test
+		void 카카오_연결_끊기가_실패해도_탈퇴는_성공하고_나중에_다시_시도한다() throws Exception {
+			String sub = uniqueSub();
+			JsonNode tokens = login("kakao", idTokens.kakao(sub, clock.instant()));
+			kakaoUnlinkClient.failing(true);
+
+			withdraw(tokens.get("accessToken").asString()).andExpect(status().isOk());
+			assertThat(unlinkTaskStore.findAll()).anyMatch(task -> task.providerSubject().equals(sub));
+
+			kakaoUnlinkClient.failing(false);
+			providerUnlinkService.retryFailed();
+
+			assertThat(kakaoUnlinkClient.unlinked()).contains(sub);
+			assertThat(unlinkTaskStore.findAll()).noneMatch(task -> task.providerSubject().equals(sub));
+		}
+
+		@Test
+		void 액세스_토큰이_없으면_A001() throws Exception {
+			withdraw(null).andExpect(status().isUnauthorized()).andExpect(jsonPath("$.code").value("A001"));
+		}
+	}
+
+	private JsonNode data(ResultActions result) throws Exception {
+		return jsonMapper.readTree(result.andReturn().getResponse().getContentAsString()).get("data");
+	}
+}

@@ -1,0 +1,168 @@
+package com.ssafy.yeogirok.domain.user.service;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.util.List;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.util.StringUtils;
+
+import com.ssafy.yeogirok.domain.auth.token.RefreshTokenService;
+import com.ssafy.yeogirok.domain.auth.token.WithdrawnUserTokens;
+import com.ssafy.yeogirok.domain.footprint.repository.FootprintRepository;
+import com.ssafy.yeogirok.domain.push.repository.UserPushTokenRepository;
+import com.ssafy.yeogirok.domain.tip.service.MyTipService;
+import com.ssafy.yeogirok.domain.user.domain.User;
+import com.ssafy.yeogirok.domain.user.dto.MyAccountResponse;
+import com.ssafy.yeogirok.domain.user.dto.WithdrawResponse;
+import com.ssafy.yeogirok.domain.user.repository.UserRepository;
+import com.ssafy.yeogirok.domain.user.unlink.UserWithdrawnEvent;
+import com.ssafy.yeogirok.global.exception.BusinessException;
+import com.ssafy.yeogirok.global.exception.ExceptionType;
+import com.ssafy.yeogirok.global.oauth.OAuthProvider;
+import com.ssafy.yeogirok.global.oauth.client.GoogleOAuthClient;
+import com.ssafy.yeogirok.global.oauth.client.GoogleOAuthClient.GoogleTokens;
+import com.ssafy.yeogirok.global.oauth.oidc.IdTokenVerifier;
+import com.ssafy.yeogirok.global.oauth.oidc.OidcIdentity;
+import com.ssafy.yeogirok.global.security.AuthenticatedUser;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+	private final UserRepository userRepository;
+	private final UserPushTokenRepository userPushTokenRepository;
+	private final FootprintRepository footprintRepository;
+	private final MyTipService myTipService;
+	private final RefreshTokenService refreshTokenService;
+	private final WithdrawnUserTokens withdrawnUserTokens;
+	private final GoogleOAuthClient googleOAuthClient;
+	private final IdTokenVerifier idTokenVerifier;
+	private final ApplicationEventPublisher eventPublisher;
+	private final TransactionTemplate transactionTemplate;
+	private final WithdrawalProperties properties;
+	private final Clock clock;
+
+	/** API-008. */
+	@Transactional(readOnly = true)
+	public MyAccountResponse getMyAccount(Long userId) {
+		User user = findActiveUser(userId);
+
+		// 발자취는 삭제하지 않은 것, 팁은 내 팁 목록(API-053)에 나오는 것(삭제 안 된 REGISTERING·PUBLISHED·FAILED)을 센다.
+		return new MyAccountResponse(
+			user.getId(),
+			user.getNickname(),
+			user.getProfileImageUrl(),
+			new MyAccountResponse.ActivityCounts(
+				footprintRepository.countByUserIdAndDeletedAtIsNull(user.getId()),
+				myTipService.countMyTips(user.getId())),
+			List.of(user.getProvider().getValue()));
+	}
+
+	/**
+	 * API-009. 순서: 최근 재인증 확인(A011) → 구글이면 serverAuthCode 교환(외부 호출이라 트랜잭션 밖) →
+	 * 계정 비활성화 → 커밋 뒤 모든 기기 세션 폐기(Redis)와 제공자 연결 해제
+	 * ({@link com.ssafy.yeogirok.domain.user.unlink.ProviderUnlinkService}). 세션 폐기·연결 해제가 실패해도 탈퇴는 성공한다.
+	 *
+	 * <p>발급된 액세스 토큰은 만료(최대 TTL)까지 서명이 유효하다. 커밋 뒤 {@link WithdrawnUserTokens} 에 남겨
+	 * JWT 검증 단계에서 모든 API 를 막는다(A003).
+	 */
+	public WithdrawResponse withdraw(AuthenticatedUser principal, String googleAuthCode) {
+		User user = findActiveUser(principal.userId());
+		requireRecentLogin(principal.authenticatedAt());
+		String googleRevokeToken = user.getProvider() == OAuthProvider.GOOGLE
+			? exchangeGoogleAuthCode(user, googleAuthCode).revocableToken()
+			: null;
+
+		UserWithdrawnEvent event = new UserWithdrawnEvent(user.getId(), user.getProvider(), user.getProviderSubject(),
+			googleRevokeToken);
+		transactionTemplate.executeWithoutResult(status -> {
+			// 회원 행을 잠근다. 동시에 온 두 번째 탈퇴는 기다렸다가 탈퇴 상태를 보고 A003 으로 끝난다(이벤트가 두 번 나가지 않는다).
+			User target = userRepository.findByIdForUpdate(principal.userId())
+				.filter(User::isActive)
+				.orElseThrow(() -> new BusinessException(ExceptionType.ACCESS_TOKEN_INVALID));
+			target.withdraw(clock.instant());
+			// 푸시 기기 토큰을 모두 지운다(노션 ERD › user_push_tokens). 탈퇴한 계정으로 채팅 알림이 가지 않는다.
+			userPushTokenRepository.deleteAllByUserId(target.getId());
+			// 탈퇴 데이터 정리(노션 ERD › ERD 설계 관련 사항). 이 이벤트를 받는 @EventListener 가 잠근 회원 행 아래, 이 트랜잭션
+			// 안에서 정리한다. 하나라도 실패하면 탈퇴 전체가 롤백된다.
+			//  - 발자취: 미삭제분을 footprint_statistics 에 합산하고 원본을 모두 지운다(statistics.WithdrawnFootprints).
+			//  - 여행방: 현재 참여자가 0명이 된 방을 지운다(room.service.WithdrawnMemberRooms).
+			// 이야기·사진·채팅·AR 팁의 작성자 익명 표시와 참여자 명단 제외는 각 조회가 계정 상태로 한다(데이터는 그대로 둔다).
+			// 커밋 뒤 처리(@TransactionalEventListener AFTER_COMMIT)는 연결 해제·채팅 연결 끊기·참여자 변경 알림이다.
+			eventPublisher.publishEvent(event);
+		});
+
+		blockRemainingAccessTokens(user.getId());
+		log.info("User withdrawn. userId={}, provider={}, revokedSessions={}", user.getId(), user.getProvider(),
+			revokeAllSessions(user.getId()));
+		return WithdrawResponse.queued();
+	}
+
+	/** 실패하면 남은 액세스 토큰은 만료까지 쓸 수 있다. 회원을 조회하는 API 는 그래도 {@link #findActiveUser} 로 막힌다. */
+	private void blockRemainingAccessTokens(Long userId) {
+		try {
+			withdrawnUserTokens.markWithdrawn(userId);
+		} catch (RuntimeException e) {
+			log.error("Failed to block access tokens of withdrawn user. userId={}", userId, e);
+		}
+	}
+
+	/** Redis 는 DB 트랜잭션에 묶이지 않아 커밋 뒤에 폐기한다. 실패해도 재발급(API-006)이 탈퇴 회원을 막는다. */
+	private long revokeAllSessions(Long userId) {
+		try {
+			return refreshTokenService.revokeAllSessions(userId);
+		} catch (RuntimeException e) {
+			log.error("Failed to revoke sessions of withdrawn user. userId={}", userId, e);
+			return 0;
+		}
+	}
+
+	/** 재발급(API-006) 토큰에는 로그인 시각이 없어 재인증으로 보지 않는다. 앱은 다시 로그인(API-005)한 뒤 탈퇴한다. */
+	private void requireRecentLogin(Instant authenticatedAt) {
+		if (authenticatedAt == null || authenticatedAt.plus(properties.reauthMaxAge()).isBefore(clock.instant())) {
+			throw new BusinessException(ExceptionType.REAUTHENTICATION_REQUIRED);
+		}
+	}
+
+	/** 코드로 받은 ID 토큰의 sub 가 이 회원과 같아야 한다(다른 구글 계정의 코드로 해제하지 않는다). */
+	private GoogleTokens exchangeGoogleAuthCode(User user, String googleAuthCode) {
+		if (!StringUtils.hasText(googleAuthCode)) {
+			throw new BusinessException(ExceptionType.REQUIRED_VALUE_MISSING, "구글 회원은 googleAuthCode 가 필요합니다.");
+		}
+
+		GoogleTokens tokens;
+		try {
+			tokens = googleOAuthClient.exchange(googleAuthCode);
+		} catch (RuntimeException e) {
+			log.info("Google auth code exchange failed. userId={}, reason={}", user.getId(), e.getMessage());
+			throw new BusinessException(ExceptionType.GOOGLE_AUTH_CODE_INVALID);
+		}
+
+		OidcIdentity identity;
+		try {
+			identity = idTokenVerifier.verifyFromTokenEndpoint(OAuthProvider.GOOGLE, tokens.idToken());
+		} catch (BusinessException e) {
+			throw new BusinessException(ExceptionType.GOOGLE_AUTH_CODE_INVALID);
+		}
+		if (!identity.subject().equals(user.getProviderSubject())) {
+			log.info("Google auth code belongs to another account. userId={}", user.getId());
+			throw new BusinessException(ExceptionType.GOOGLE_AUTH_CODE_INVALID);
+		}
+		return tokens;
+	}
+
+	/** 토큰의 회원이 없거나 탈퇴했으면 토큰이 유효하지 않은 것으로 본다(명세의 인증 실패는 A001~A003 뿐이다). */
+	private User findActiveUser(Long userId) {
+		return userRepository.findById(userId)
+			.filter(User::isActive)
+			.orElseThrow(() -> new BusinessException(ExceptionType.ACCESS_TOKEN_INVALID));
+	}
+}

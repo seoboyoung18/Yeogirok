@@ -1,0 +1,47 @@
+# 서버(EC2) 프로필. infra/docker-compose.yml 이 SPRING_PROFILES_ACTIVE=prod 와 아래 환경 변수를 넘긴다.
+spring:
+  datasource:
+    # local 과 같은 이름이지만 기본값을 두지 않는다. 값이 없으면 잘못된 DB에 붙지 않고 실행이 바로 실패한다.
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  data:
+    redis:
+      # DB 와 같이 기본값을 두지 않는다. 값이 없으면 실행이 바로 실패한다.
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+  jpa:
+    hibernate:
+      # 테이블은 Flyway 가 만들고(db/migration), Hibernate 는 엔티티와 맞는지만 확인한다.
+      # 이 설정이 처음 배포되는 날 서버 DB 를 한 번 비운다(infra/README.md 7단계). 비우지 않으면 Flyway 가 시작을 거부한다.
+      ddl-auto: validate
+
+yeogirok:
+  # API-046 방문 분포 집계 기준. 노션에 수치가 확정되지 않아 기본값을 두지 않는다. 값이 없으면 실행이 바로 실패한다.
+  # 기본 셀 크기를 바꾸면 집계 버전도 바꾼다. 같은 버전 이름으로 셀 정의를 덮어쓰지 않는다.
+  visit-statistics:
+    aggregation-version: ${VISIT_STATS_AGGREGATION_VERSION}
+    base-cell-size-degrees: ${VISIT_STATS_BASE_CELL_SIZE_DEGREES}
+    zoom-multipliers: ${VISIT_STATS_ZOOM_MULTIPLIERS}
+    min-count: ${VISIT_STATS_MIN_COUNT}
+  # 현재 위치 증거(DEC-01). 수치가 확정되지 않아 기본값을 두지 않는다. 값이 없으면 실행이 바로 실패한다.
+  location-evidence:
+    max-age: ${LOCATION_EVIDENCE_MAX_AGE}
+    max-future-skew: ${LOCATION_EVIDENCE_MAX_FUTURE_SKEW}
+    policy-version: ${LOCATION_POLICY_VERSION}
+    max-accuracy-meters: ${LOCATION_EVIDENCE_MAX_ACCURACY_METERS}
+  idempotency:
+    # 정하지 않은 수치는 기본값 없이 받는다. 값이 없으면 실행이 바로 실패한다.
+    retention: ${IDEMPOTENCY_RETENTION}
+    processing-timeout: ${IDEMPOTENCY_PROCESSING_TIMEOUT}
+  # S3 버킷·리전. 서버 compose 가 이미 넘기는 값이다(새 환경 변수 아님). 키는 AWS_ACCESS_KEY_ID·AWS_SECRET_ACCESS_KEY 로 SDK 가 읽는다.
+  file:
+    region: ${AWS_REGION}
+    photo-bucket: ${S3_PHOTO_BUCKET}
+    receipt-bucket: ${S3_RECEIPT_BUCKET}
+
+server:
+  # Nginx(HTTPS) 뒤에서 X-Forwarded-* 헤더로 원래 주소(https, 도메인)를 복원한다.
+  # 없으면 Swagger 가 서버 주소를 http://127.0.0.1:8080 으로 잡아 HTTPS 페이지에서 요청이 깨진다.
+  forward-headers-strategy: framework

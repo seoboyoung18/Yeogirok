@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/yeogirok}
+    username: ${DB_USERNAME:yeogirok}
+    password: ${DB_PASSWORD:yeogirok}
+  data:
+    redis:
+      # infra/docker-compose.local.yml 의 redis 와 같다(비밀번호 없음).
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+  jpa:
+    hibernate:
+      # 테이블은 Flyway 가 만들고(db/migration), Hibernate 는 엔티티와 맞는지만 확인한다. 엔티티를 바꾸면 새 번호 파일을 함께 추가한다.
+      # update 로 만든 예전 로컬 DB 가 남아 있으면 Flyway 가 시작을 거부한다. 한 번 비운다(docs/08-flyway.md).
+      ddl-auto: validate
+
+yeogirok:
+  # API-046 방문 분포. 로컬 실행용 값이다. 실제 값은 prod 환경 변수로 넣는다.
+  # 기본 셀 크기를 바꾸면 aggregation-version 도 바꾼다(VisitStatisticsProperties 참고).
+  # zoom 16 이상은 0.0001~0.001도로 촘촘하게, 15 이하는 이전 격자(0.005~0.64도)와 같은 칸 크기(S15P31A109-213).
+  visit-statistics:
+    aggregation-version: grid-0.0001-v1
+    base-cell-size-degrees: 0.0001
+    zoom-multipliers: "19:1,18:2,17:5,16:10,15:50,13:100,11:400,9:1600,0:6400"
+    min-count: 1
+  # 현재 위치 증거(DEC-01). 로컬 실행용 제안값이다(11/4). 실제 값은 팀이 정해 prod 환경 변수로 넣는다.
+  # 기준을 바꾸면 policy-version 도 바꾼다(footprints.location_policy_version 에 저장된다).
+  location-evidence:
+    # 11/6: 프론트 W16 이 핀 조정·글쓰기 뒤 등록해 2분은 빠듯했다(11/8 local 만 5분).
+    max-age: 5m
+    max-future-skew: 30s
+    policy-version: location-v1
+    # AR 팁(047·048·049·052) 위치 정확도 기준(11/8 제안 30m).
+    max-accuracy-meters: 30
+  idempotency:
+    # 멱등키 보관 기간(11/3 결정, 요청 종류와 상관없이 같다)과 처리 중 표시 수명(제안값).
+    retention: ${IDEMPOTENCY_RETENTION:24h}
+    processing-timeout: ${IDEMPOTENCY_PROCESSING_TIMEOUT:30s}
+  # S3 버킷·리전. 기본값은 dev 버킷이다. 자격 증명은 AWS_PROFILE 등 SDK 기본 방식으로 넣고 여기에 쓰지 않는다.
+  file:
+    region: ${AWS_REGION:ap-northeast-2}
+    photo-bucket: ${S3_PHOTO_BUCKET:yeogirok-a109-photos-dev}
+    receipt-bucket: ${S3_RECEIPT_BUCKET:yeogirok-a109-receipts-dev}
