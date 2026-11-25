@@ -1,3 +1,5 @@
+// 등록 순서를 지키려면 동기 require 가 필요하다(아래 주석). import 로 바꾸면 화면 등록·MSW 시작 순서가 달라진다.
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { AppRegistry } from "react-native";
 
 AppRegistry.registerComponent("ArTipDetail", () => {
