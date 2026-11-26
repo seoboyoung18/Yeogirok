@@ -40,6 +40,8 @@ java -Xms1g -Xmx1g -jar build/libs/yeogirok-0.0.1-SNAPSHOT.jar
 | 외부 API(카카오) 장애 | `python performance-tests/scripts/fake_kakao.py` 를 띄우고, `.env.perf` 에 `KAKAO_REST_API_KEY=perf-dummy`·`YEOGIROK_KAKAO_LOCAL_BASE_URL=http://localhost:18200`·`YEOGIROK_KAKAO_MOBILITY_BASE_URL=http://localhost:18200` 을 넣어 앱을 띄운 뒤 `python performance-tests/scripts/external_api_failure.py --label <이름>` | `results/external-api-<이름>.json` |
 | 파일 업로드 | `.env.perf` 에 `YEOGIROK_FILE_ENDPOINT=http://localhost:59090`·`S3_PHOTO_BUCKET=perf-photos`·`S3_RECEIPT_BUCKET=perf-receipts`·`AWS_ACCESS_KEY_ID`·`AWS_SECRET_ACCESS_KEY`(아무 값)을 넣어 앱을 띄운 뒤 `python performance-tests/scripts/file_upload.py --label <이름>` | `results/file-upload-<이름>.json` |
 | 공식 코스 적재 | `python performance-tests/scripts/seed_pipeline.py --label <이름> --small <작은 묶음 사본> --large <큰 묶음 사본>` (앱을 적재 설정으로 따로 띄운다. 묶음 데이터는 Git 에 올리지 않는다) | `results/seed-pipeline-<이름>.json` |
+| 인증·인가·입력 검증 | `python performance-tests/scripts/security_check.py --label <이름>` (요청을 한 건씩 보낸다. 토큰·응답 원문은 결과에 남기지 않는다) | `results/security-<이름>.json` |
+| 장시간 안정성 | `python performance-tests/scripts/soak.py --label <이름> --windows 6 --window-seconds 600` (초당 40건, 끝나면 이번에 저장한 발자취를 지운다) | `results/soak-<이름>.json` |
 
 - `bench_sql.py` 는 규모마다 시드를 다시 넣는다(기존 측정용 데이터는 지워진다).
 - `run_load.py` 는 지금 들어 있는 데이터로 잰다. 먼저 원하는 규모로 시드를 넣는다.
