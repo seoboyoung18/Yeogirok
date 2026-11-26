@@ -1,0 +1,349 @@
+started idxbefore on 18080 (31s)
+ setseed 
+---------
+ 
+(1 row)
+
+ footprints |  tips  | users 
+------------+--------+-------
+     100000 | 100000 |  5000
+(1 row)
+
+[17:33:27] seeded
+200 046 방문 분포(도시) (91445자)
+200 046 방문 분포(카테고리) (51430자)
+200 046 방문 분포(전국) (2430자)
+200 047 주변 팁 (124자)
+200 042 내 발자취 (2204자)
+200 053 내 팁 (1449자)
+201 041 발자취 저장 (223자)
+200 지표 (111364자)
+stats-city     #1 RPS     33.8 P50   891.48 P95  1201.68 P99  1474.45 실패 0.0000 못 보냄 0 | 풀 사용 평균 9.29 최대 10.0 대기 최대 20.0 앱 CPU 평균 0.237 PC CPU 평균 0.95
+stats-city     #2 RPS     34.9 P50   875.75 P95  1130.16 P99  1437.70 실패 0.0000 못 보냄 0 | 풀 사용 평균 10.0 최대 10.0 대기 최대 20.0 앱 CPU 평균 0.225 PC CPU 평균 0.971
+stats-city     #3 RPS     37.2 P50   814.76 P95  1028.74 P99  1329.51 실패 0.0000 못 보냄 0 | 풀 사용 평균 10.0 최대 10.0 대기 최대 20.0 앱 CPU 평균 0.187 PC CPU 평균 0.971
+stats-nation   #1 RPS      3.4 P50 10129.43 P95 13325.22 P99 14951.05 실패 0.0000 못 보냄 0 | 풀 사용 평균 9.816 최대 10.0 대기 최대 34.0 앱 CPU 평균 0.148 PC CPU 평균 1.0
+stats-nation   #2 RPS      3.4 P50 10125.86 P95 13780.11 P99 14986.03 실패 0.0000 못 보냄 0 | 풀 사용 평균 9.892 최대 10.0 대기 최대 33.0 앱 CPU 평균 0.144 PC CPU 평균 0.999
+stats-nation   #3 RPS      3.4 P50 10201.70 P95 13202.90 P99 14524.93 실패 0.0000 못 보냄 0 | 풀 사용 평균 9.684 최대 10.0 대기 최대 31.0 앱 CPU 평균 0.156 PC CPU 평균 0.996
+tips-search    #1 RPS     70.7 P50   422.27 P95   603.35 P99   758.13 실패 0.0000 못 보냄 0 | 풀 사용 평균 9.967 최대 10.0 대기 최대 20.0 앱 CPU 평균 0.158 PC CPU 평균 0.975
+tips-search    #2 RPS     78.3 P50   382.85 P95   512.61 P99   653.87 실패 0.0000 못 보냄 0 | 풀 사용 평균 9.933 최대 10.0 대기 최대 20.0 앱 CPU 평균 0.074 PC CPU 평균 0.969
+tips-search    #3 RPS     80.3 P50   372.32 P95   509.83 P99   637.67 실패 0.0000 못 보냄 0 | 풀 사용 평균 9.633 최대 10.0 대기 최대 20.0 앱 CPU 평균 0.051 PC CPU 평균 0.966
+my-footprints  #1 RPS    123.7 P50   237.19 P95   362.30 P99   454.94 실패 0.0000 못 보냄 0 | 풀 사용 평균 9.933 최대 10.0 대기 최대 20.0 앱 CPU 평균 0.157 PC CPU 평균 0.969
+my-footprints  #2 RPS    131.3 P50   225.36 P95   329.98 P99   397.48 실패 0.0000 못 보냄 0 | 풀 사용 평균 10.0 최대 10.0 대기 최대 20.0 앱 CPU 평균 0.106 PC CPU 평균 0.97
+my-footprints  #3 RPS    135.0 P50   219.45 P95   331.11 P99   385.53 실패 0.0000 못 보냄 0 | 풀 사용 평균 9.667 최대 10.0 대기 최대 20.0 앱 CPU 평균 0.084 PC CPU 평균 0.966
+my-tips        #1 RPS    111.3 P50   266.11 P95   382.87 P99   481.69 실패 0.0000 못 보냄 0 | 풀 사용 평균 9.967 최대 10.0 대기 최대 20.0 앱 CPU 평균 0.116 PC CPU 평균 0.97
+my-tips        #2 RPS    117.0 P50   255.80 P95   362.57 P99   443.29 실패 0.0000 못 보냄 0 | 풀 사용 평균 9.933 최대 10.0 대기 최대 20.0 앱 CPU 평균 0.077 PC CPU 평균 0.972
+my-tips        #3 RPS    115.4 P50   257.75 P95   375.58 P99   454.61 실패 0.0000 못 보냄 0 | 풀 사용 평균 9.933 최대 10.0 대기 최대 20.0 앱 CPU 평균 0.078 PC CPU 평균 0.968
+[17:45:26] DONE load-before-closed (exit 0)
+stats-city     #1 RPS     20.0 P50    63.81 P95    88.40 P99   107.98 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.3 최대 2.0 대기 최대 0.0 앱 CPU 평균 0.076 PC CPU 평균 0.409
+stats-city     #2 RPS     20.0 P50    62.19 P95    84.26 P99    97.82 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.067 최대 2.0 대기 최대 0.0 앱 CPU 평균 0.069 PC CPU 평균 0.392
+stats-city     #3 RPS     20.0 P50    64.27 P95    88.67 P99   103.45 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.167 최대 2.0 대기 최대 0.0 앱 CPU 평균 0.072 PC CPU 평균 0.421
+stats-nation   #1 RPS      2.0 P50   768.46 P95   925.86 P99  1020.33 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.516 최대 2.0 대기 최대 0.0 앱 CPU 평균 0.07 PC CPU 평균 0.461
+stats-nation   #2 RPS      2.0 P50   784.47 P95   911.28 P99   946.49 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.533 최대 2.0 대기 최대 0.0 앱 CPU 평균 0.067 PC CPU 평균 0.462
+stats-nation   #3 RPS      2.0 P50   759.33 P95   918.68 P99   953.21 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.548 최대 2.0 대기 최대 0.0 앱 CPU 평균 0.068 PC CPU 평균 0.455
+tips-search    #1 RPS     45.0 P50    33.78 P95    49.05 P99    64.10 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.433 최대 2.0 대기 최대 0.0 앱 CPU 평균 0.031 PC CPU 평균 0.449
+tips-search    #2 RPS     45.0 P50    32.68 P95    47.22 P99    54.57 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.267 최대 2.0 대기 최대 0.0 앱 CPU 평균 0.031 PC CPU 평균 0.436
+tips-search    #3 RPS     45.0 P50    32.38 P95    47.32 P99    56.95 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.333 최대 2.0 대기 최대 0.0 앱 CPU 평균 0.03 PC CPU 평균 0.44
+my-footprints  #1 RPS     80.0 P50    22.16 P95    38.21 P99    58.55 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.9 최대 4.0 대기 최대 0.0 앱 CPU 평균 0.062 PC CPU 평균 0.523
+my-footprints  #2 RPS     80.0 P50    20.87 P95    32.45 P99    45.58 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.533 최대 3.0 대기 최대 0.0 앱 CPU 평균 0.061 PC CPU 평균 0.5
+my-footprints  #3 RPS     80.0 P50    21.37 P95    34.79 P99    46.64 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.733 최대 3.0 대기 최대 0.0 앱 CPU 평균 0.065 PC CPU 평균 0.516
+my-tips        #1 RPS     70.0 P50    24.77 P95    41.67 P99   100.33 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.867 최대 9.0 대기 최대 0.0 앱 CPU 평균 0.053 PC CPU 평균 0.514
+my-tips        #2 RPS     70.0 P50    24.73 P95    39.92 P99    81.03 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.8 최대 9.0 대기 최대 0.0 앱 CPU 평균 0.055 PC CPU 평균 0.509
+my-tips        #3 RPS     70.0 P50    24.51 P95    38.31 P99    45.88 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.567 최대 3.0 대기 최대 0.0 앱 CPU 평균 0.053 PC CPU 평균 0.503
+[17:57:14] DONE load-before-rate (exit 0)
+started after on 18080 (25s)
+footprints_pkey
+ix_footprints_user_active
+ix_footprints_geo_cover
+ar_tips_pkey
+ix_ar_tips_public_geo
+ix_ar_tips_author_active
+uq_ar_tips_author_request
+200 046 방문 분포(도시) (91445자)
+200 046 방문 분포(카테고리) (51430자)
+200 046 방문 분포(전국) (2430자)
+200 047 주변 팁 (124자)
+200 042 내 발자취 (2373자)
+200 053 내 팁 (1449자)
+201 041 발자취 저장 (223자)
+200 지표 (108883자)
+stats-city     #1 RPS     20.0 P50    42.76 P95    65.79 P99    77.63 실패 0.0000 못 보냄 0 | 풀 사용 평균 0.633 최대 2.0 대기 최대 0.0 앱 CPU 평균 0.163 PC CPU 평균 0.378
+stats-city     #2 RPS     20.0 P50    39.21 P95    53.30 P99    62.69 실패 0.0000 못 보냄 0 | 풀 사용 평균 0.633 최대 1.0 대기 최대 0.0 앱 CPU 평균 0.112 PC CPU 평균 0.322
+stats-city     #3 RPS     20.0 P50    38.23 P95    51.98 P99    68.50 실패 0.0000 못 보냄 0 | 풀 사용 평균 0.567 최대 1.0 대기 최대 0.0 앱 CPU 평균 0.093 PC CPU 평균 0.305
+stats-nation   #1 RPS      2.0 P50   740.51 P95   835.45 P99   965.32 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.433 최대 2.0 대기 최대 0.0 앱 CPU 평균 0.073 PC CPU 평균 0.456
+stats-nation   #2 RPS      2.0 P50   748.20 P95   861.88 P99   946.80 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.419 최대 2.0 대기 최대 0.0 앱 CPU 평균 0.067 PC CPU 평균 0.448
+stats-nation   #3 RPS      2.0 P50   763.54 P95   861.27 P99   911.63 실패 0.0000 못 보냄 0 | 풀 사용 평균 1.533 최대 2.0 대기 최대 0.0 앱 CPU 평균 0.075 PC CPU 평균 0.462
+tips-search    #1 RPS     45.0 P50     4.94 P95     7.19 P99     9.10 실패 0.0000 못 보냄 0 | 풀 사용 평균 0.033 최대 1.0 대기 최대 0.0 앱 CPU 평균 0.075 PC CPU 평균 0.159
+tips-search    #2 RPS     45.0 P50     4.34 P95     6.74 P99     9.38 실패 0.0000 못 보냄 0 | 풀 사용 평균 0.133 최대 1.0 대기 최대 0.0 앱 CPU 평균 0.091 PC CPU 평균 0.172
+tips-search    #3 RPS     45.0 P50     3.81 P95     5.23 P99     7.65 실패 0.0000 못 보냄 0 | 풀 사용 평균 0.1 최대 1.0 대기 최대 0.0 앱 CPU 평균 0.043 PC CPU 평균 0.126
+my-footprints  #1 RPS     80.0 P50     4.35 P95     6.25 P99     8.55 실패 0.0000 못 보냄 0 | 풀 사용 평균 0.3 최대 1.0 대기 최대 0.0 앱 CPU 평균 0.107 PC CPU 평균 0.209
+my-footprints  #2 RPS     80.0 P50     3.97 P95     5.73 P99     7.51 실패 0.0000 못 보냄 0 | 풀 사용 평균 0.233 최대 1.0 대기 최대 0.0 앱 CPU 평균 0.099 PC CPU 평균 0.198
+my-footprints  #3 RPS     80.0 P50     3.55 P95     4.59 P99     5.90 실패 0.0000 못 보냄 0 | 풀 사용 평균 0.2 최대 1.0 대기 최대 0.0 앱 CPU 평균 0.082 PC CPU 평균 0.183
+my-tips        #1 RPS     70.0 P50     3.69 P95     4.80 P99     6.04 실패 0.0000 못 보냄 0 | 풀 사용 평균 0.367 최대 1.0 대기 최대 0.0 앱 CPU 평균 0.062 PC CPU 평균 0.156
+my-tips        #2 RPS     70.0 P50     3.78 P95     5.77 P99     8.76 실패 0.0000 못 보냄 0 | 풀 사용 평균 0.4 최대 1.0 대기 최대 0.0 앱 CPU 평균 0.068 PC CPU 평균 0.166
+my-tips        #3 RPS     70.0 P50     3.62 P95     5.31 P99     6.78 실패 0.0000 못 보냄 0 | 풀 사용 평균 0.3 최대 1.0 대기 최대 0.0 앱 CPU 평균 0.051 PC CPU 평균 0.148
+[18:09:10] DONE load-after-rate (exit 0)
+같은 사용자·같은 위치 5건 [{"outcome": {"201": 1, "409 F003": 4}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 59.4, "p95_ms": 59.9, "max_ms": 61.0, "rows_saved": 1}, {"outcome": {"409 F003": 4, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 28.0, "p95_ms": 30.7, "max_ms": 34.3, "rows_saved": 1}, {"outcome": {"409 F003": 4, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 24.1, "p95_ms": 34.3, "max_ms": 36.0, "rows_saved": 1}]
+같은 사용자·같은 위치 10건 [{"outcome": {"409 F003": 9, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 33.9, "p95_ms": 49.5, "max_ms": 51.4, "rows_saved": 1}, {"outcome": {"409 F003": 9, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 38.1, "p95_ms": 46.0, "max_ms": 46.1, "rows_saved": 1}, {"outcome": {"409 F003": 9, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 31.9, "p95_ms": 43.3, "max_ms": 44.3, "rows_saved": 1}]
+같은 사용자·같은 위치 50건 [{"outcome": {"409 F003": 49, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 173.4, "p95_ms": 248.7, "max_ms": 258.6, "rows_saved": 1}, {"outcome": {"409 F003": 49, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 129.7, "p95_ms": 226.9, "max_ms": 244.8, "rows_saved": 1}, {"outcome": {"409 F003": 49, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 91.7, "p95_ms": 144.5, "max_ms": 150.4, "rows_saved": 1}]
+같은 사용자·같은 위치 100건 [{"outcome": {"409 F003": 99, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 226.7, "p95_ms": 331.4, "max_ms": 347.3, "rows_saved": 1}, {"outcome": {"409 F003": 99, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 163.5, "p95_ms": 276.9, "max_ms": 319.2, "rows_saved": 1}, {"outcome": {"409 F003": 99, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 187.4, "p95_ms": 324.3, "max_ms": 349.2, "rows_saved": 1}]
+같은 사용자·같은 위치 200건 [{"outcome": {"409 F003": 199, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 375.3, "p95_ms": 593.8, "max_ms": 675.3, "rows_saved": 1}, {"outcome": {"409 F003": 199, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 291.1, "p95_ms": 505.8, "max_ms": 564.4, "rows_saved": 1}, {"outcome": {"409 F003": 199, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 276.0, "p95_ms": 466.5, "max_ms": 567.9, "rows_saved": 1}]
+같은 사용자·같은 위치 500건 [{"outcome": {"409 F003": 499, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 695.2, "p95_ms": 1118.6, "max_ms": 1304.4, "rows_saved": 1}, {"outcome": {"409 F003": 499, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 721.1, "p95_ms": 1225.3, "max_ms": 1421.5, "rows_saved": 1}, {"outcome": {"409 F003": 499, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 865.6, "p95_ms": 1371.5, "max_ms": 1518.6, "rows_saved": 1}]
+같은 사용자·10m 간격 50건(모두 500m 안) [{"outcome": {"409 F003": 49, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 73.5, "p95_ms": 102.6, "max_ms": 106.9, "rows_saved": 1}, {"outcome": {"409 F003": 49, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 70.6, "p95_ms": 102.5, "max_ms": 106.1, "rows_saved": 1}, {"outcome": {"409 F003": 49, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 75.8, "p95_ms": 118.6, "max_ms": 127.4, "rows_saved": 1}]
+같은 사용자·600m 간격 50건(모두 500m 밖) [{"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 193.0, "p95_ms": 330.2, "max_ms": 348.3, "rows_saved": 50}, {"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 154.8, "p95_ms": 291.4, "max_ms": 323.3, "rows_saved": 50}, {"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 208.5, "p95_ms": 315.2, "max_ms": 338.3, "rows_saved": 50}]
+서로 다른 사용자 50명·같은 위치 [{"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 81.9, "p95_ms": 109.7, "max_ms": 124.2, "rows_saved": 50}, {"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 79.4, "p95_ms": 112.2, "max_ms": 116.0, "rows_saved": 50}, {"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 71.8, "p95_ms": 95.5, "max_ms": 97.8, "rows_saved": 50}]
+저장 20건 + 삭제 1건 동시 [{"creates": {"outcome": {"409 F003": 19, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 37.1, "p95_ms": 96.1, "max_ms": 97.2}, "delete": {"200": 1}, "rows_saved": 1}, {"creates": {"outcome": {"409 F003": 19, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 54.0, "p95_ms": 72.4, "max_ms": 73.5}, "delete": {"200": 1}, "rows_saved": 1}, {"creates": {"outcome": {"201": 1, "409 F003": 19}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 53.0, "p95_ms": 77.7, "max_ms": 81.4}, "delete": {"200": 1}, "rows_saved": 1}]
+같은 사용자 200건 중 다른 회원 조회 20건 [{"writer": {"outcome": {"409 F003": 199, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 364.0, "p95_ms": 557.1, "max_ms": 594.8}, "bystander_reads": {"outcome": {"200": 20}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 354.5, "p95_ms": 546.8, "max_ms": 553.6}, "rows_saved": 1}, {"writer": {"outcome": {"409 F003": 199, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 289.2, "p95_ms": 464.1, "max_ms": 534.0}, "bystander_reads": {"outcome": {"200": 20}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 292.2, "p95_ms": 418.9, "max_ms": 422.2}, "rows_saved": 1}, {"writer": {"outcome": {"409 F003": 199, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 240.3, "p95_ms": 393.1, "max_ms": 424.3}, "bystander_reads": {"outcome": {"200": 20}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 170.7, "p95_ms": 377.2, "max_ms": 398.4}, "rows_saved": 1}]
+데드락 0
+started after on 18081 (22s)
+같은 사용자·같은 위치 5건 [{"outcome": {"409 F003": 4, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 25.7, "p95_ms": 802.4, "max_ms": 802.9, "rows_saved": 1}, {"outcome": {"201": 1, "409 F003": 4}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 20.6, "p95_ms": 38.2, "max_ms": 42.3, "rows_saved": 1}, {"outcome": {"409 F003": 4, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 18.4, "p95_ms": 32.5, "max_ms": 39.0, "rows_saved": 1}]
+같은 사용자·같은 위치 10건 [{"outcome": {"409 F003": 9, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 40.9, "p95_ms": 65.7, "max_ms": 70.9, "rows_saved": 1}, {"outcome": {"409 F003": 9, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 43.7, "p95_ms": 76.8, "max_ms": 82.9, "rows_saved": 1}, {"outcome": {"409 F003": 9, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 48.2, "p95_ms": 96.3, "max_ms": 109.9, "rows_saved": 1}]
+같은 사용자·같은 위치 50건 [{"outcome": {"409 F003": 49, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 174.0, "p95_ms": 330.2, "max_ms": 347.0, "rows_saved": 1}, {"outcome": {"409 F003": 49, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 111.6, "p95_ms": 261.5, "max_ms": 301.4, "rows_saved": 1}, {"outcome": {"409 F003": 49, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 168.9, "p95_ms": 287.8, "max_ms": 312.6, "rows_saved": 1}]
+같은 사용자·같은 위치 100건 [{"outcome": {"409 F003": 99, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 502.7, "p95_ms": 706.9, "max_ms": 737.8, "rows_saved": 1}, {"outcome": {"409 F003": 99, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 312.8, "p95_ms": 503.8, "max_ms": 559.8, "rows_saved": 1}, {"outcome": {"409 F003": 99, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 307.6, "p95_ms": 479.1, "max_ms": 542.5, "rows_saved": 1}]
+같은 사용자·같은 위치 200건 [{"outcome": {"409 F003": 199, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 491.2, "p95_ms": 826.9, "max_ms": 908.8, "rows_saved": 1}, {"outcome": {"409 F003": 199, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 567.8, "p95_ms": 864.5, "max_ms": 968.4, "rows_saved": 1}, {"outcome": {"409 F003": 199, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 399.1, "p95_ms": 640.8, "max_ms": 718.3, "rows_saved": 1}]
+같은 사용자·같은 위치 500건 [{"outcome": {"409 F003": 499, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 1423.4, "p95_ms": 2221.4, "max_ms": 2425.2, "rows_saved": 1}, {"outcome": {"409 F003": 499, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 1303.1, "p95_ms": 1836.4, "max_ms": 2117.9, "rows_saved": 1}, {"outcome": {"409 F003": 499, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 991.9, "p95_ms": 1534.4, "max_ms": 1730.7, "rows_saved": 1}]
+같은 사용자·10m 간격 50건(모두 500m 안) [{"outcome": {"409 F003": 49, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 110.7, "p95_ms": 177.4, "max_ms": 181.2, "rows_saved": 1}, {"outcome": {"409 F003": 49, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 160.6, "p95_ms": 236.3, "max_ms": 253.5, "rows_saved": 1}, {"outcome": {"409 F003": 49, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 106.9, "p95_ms": 163.3, "max_ms": 179.7, "rows_saved": 1}]
+같은 사용자·600m 간격 50건(모두 500m 밖) [{"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 216.2, "p95_ms": 379.7, "max_ms": 406.6, "rows_saved": 50}, {"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 204.3, "p95_ms": 334.4, "max_ms": 351.3, "rows_saved": 50}, {"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 204.8, "p95_ms": 328.0, "max_ms": 354.4, "rows_saved": 50}]
+서로 다른 사용자 50명·같은 위치 [{"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 73.4, "p95_ms": 114.3, "max_ms": 119.9, "rows_saved": 50}, {"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 95.2, "p95_ms": 153.6, "max_ms": 155.5, "rows_saved": 50}, {"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 86.3, "p95_ms": 130.1, "max_ms": 139.1, "rows_saved": 50}]
+저장 20건 + 삭제 1건 동시 [{"creates": {"outcome": {"201": 1, "409 F003": 19}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 52.1, "p95_ms": 65.5, "max_ms": 65.8}, "delete": {"200": 1}, "rows_saved": 1}, {"creates": {"outcome": {"409 F003": 19, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 39.7, "p95_ms": 54.7, "max_ms": 56.9}, "delete": {"200": 1}, "rows_saved": 1}, {"creates": {"outcome": {"409 F003": 19, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 31.8, "p95_ms": 40.9, "max_ms": 40.9}, "delete": {"200": 1}, "rows_saved": 1}]
+같은 사용자 200건 중 다른 회원 조회 20건 [{"writer": {"outcome": {"409 F003": 199, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 242.0, "p95_ms": 418.0, "max_ms": 463.7}, "bystander_reads": {"outcome": {"200": 20}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 186.4, "p95_ms": 312.5, "max_ms": 408.9}, "rows_saved": 1}, {"writer": {"outcome": {"409 F003": 199, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 275.9, "p95_ms": 412.0, "max_ms": 471.3}, "bystander_reads": {"outcome": {"200": 20}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 254.1, "p95_ms": 405.4, "max_ms": 406.0}, "rows_saved": 1}, {"writer": {"outcome": {"409 F003": 199, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 234.0, "p95_ms": 395.6, "max_ms": 427.6}, "bystander_reads": {"outcome": {"200": 20}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 205.0, "p95_ms": 332.3, "max_ms": 355.5}, "rows_saved": 1}]
+데드락 0
+yeogirok-perf-main2
+started nolock on 18082 (27s)
+같은 사용자·같은 위치 5건 [{"outcome": {"201": 5}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 1267.1, "p95_ms": 1267.6, "max_ms": 1269.3, "rows_saved": 5}, {"outcome": {"201": 4, "409 F003": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 48.9, "p95_ms": 51.3, "max_ms": 60.9, "rows_saved": 4}, {"outcome": {"201": 5}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 42.5, "p95_ms": 45.4, "max_ms": 47.3, "rows_saved": 5}]
+같은 사용자·같은 위치 10건 [{"outcome": {"409 F003": 6, "201": 4}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 74.4, "p95_ms": 83.2, "max_ms": 85.1, "rows_saved": 4}, {"outcome": {"409 F003": 4, "201": 6}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 68.1, "p95_ms": 71.5, "max_ms": 72.2, "rows_saved": 6}, {"outcome": {"201": 7, "409 F003": 3}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 77.7, "p95_ms": 86.5, "max_ms": 87.3, "rows_saved": 7}]
+같은 사용자·같은 위치 50건 [{"outcome": {"409 F003": 47, "201": 3}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 222.1, "p95_ms": 284.1, "max_ms": 294.7, "rows_saved": 3}, {"outcome": {"409 F003": 46, "201": 4}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 199.1, "p95_ms": 231.4, "max_ms": 246.9, "rows_saved": 4}, {"outcome": {"409 F003": 41, "201": 9}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 225.1, "p95_ms": 266.5, "max_ms": 271.1, "rows_saved": 9}]
+같은 사용자·같은 위치 100건 [{"outcome": {"409 F003": 91, "201": 9}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 402.5, "p95_ms": 521.6, "max_ms": 527.5, "rows_saved": 9}, {"outcome": {"409 F003": 93, "201": 7}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 344.6, "p95_ms": 455.6, "max_ms": 469.4, "rows_saved": 7}, {"outcome": {"409 F003": 90, "201": 10}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 298.3, "p95_ms": 354.0, "max_ms": 359.7, "rows_saved": 10}]
+같은 사용자·같은 위치 200건 [{"outcome": {"201": 4, "409 F003": 196}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 632.6, "p95_ms": 749.6, "max_ms": 789.2, "rows_saved": 4}, {"outcome": {"409 F003": 193, "201": 7}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 600.5, "p95_ms": 771.8, "max_ms": 835.6, "rows_saved": 7}, {"outcome": {"409 F003": 199, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 572.0, "p95_ms": 767.8, "max_ms": 829.9, "rows_saved": 1}]
+같은 사용자·같은 위치 500건 [{"outcome": {"409 F003": 499, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 1051.9, "p95_ms": 1469.4, "max_ms": 1606.0, "rows_saved": 1}, {"outcome": {"409 F003": 499, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 834.0, "p95_ms": 1204.0, "max_ms": 1339.7, "rows_saved": 1}, {"outcome": {"409 F003": 499, "201": 1}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 854.9, "p95_ms": 1178.5, "max_ms": 1380.7, "rows_saved": 1}]
+같은 사용자·10m 간격 50건(모두 500m 안) [{"outcome": {"409 F003": 45, "201": 5}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 110.1, "p95_ms": 137.7, "max_ms": 142.8, "rows_saved": 5}, {"outcome": {"409 F003": 42, "201": 8}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 121.8, "p95_ms": 141.5, "max_ms": 152.6, "rows_saved": 8}, {"outcome": {"409 F003": 45, "201": 5}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 98.9, "p95_ms": 124.8, "max_ms": 135.3, "rows_saved": 5}]
+같은 사용자·600m 간격 50건(모두 500m 밖) [{"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 151.3, "p95_ms": 191.7, "max_ms": 207.8, "rows_saved": 50}, {"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 163.1, "p95_ms": 214.1, "max_ms": 227.1, "rows_saved": 50}, {"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 138.4, "p95_ms": 181.0, "max_ms": 194.9, "rows_saved": 50}]
+서로 다른 사용자 50명·같은 위치 [{"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 111.0, "p95_ms": 148.5, "max_ms": 151.4, "rows_saved": 50}, {"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 134.3, "p95_ms": 154.5, "max_ms": 161.7, "rows_saved": 50}, {"outcome": {"201": 50}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 156.3, "p95_ms": 198.7, "max_ms": 209.3, "rows_saved": 50}]
+저장 20건 + 삭제 1건 동시 [{"creates": {"outcome": {"409 F003": 20}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 50.2, "p95_ms": 64.7, "max_ms": 65.4}, "delete": {"200": 1}, "rows_saved": 0}, {"creates": {"outcome": {"409 F003": 16, "201": 4}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 51.7, "p95_ms": 64.4, "max_ms": 64.5}, "delete": {"200": 1}, "rows_saved": 4}, {"creates": {"outcome": {"409 F003": 13, "201": 7}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 55.6, "p95_ms": 58.8, "max_ms": 61.8}, "delete": {"200": 1}, "rows_saved": 7}]
+같은 사용자 200건 중 다른 회원 조회 20건 [{"writer": {"outcome": {"409 F003": 198, "201": 2}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 378.0, "p95_ms": 543.8, "max_ms": 562.9}, "bystander_reads": {"outcome": {"200": 20}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 443.2, "p95_ms": 497.7, "max_ms": 500.0}, "rows_saved": 2}, {"writer": {"outcome": {"409 F003": 195, "201": 5}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 274.9, "p95_ms": 395.5, "max_ms": 440.8}, "bystander_reads": {"outcome": {"200": 20}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 267.9, "p95_ms": 375.9, "max_ms": 388.6}, "rows_saved": 5}, {"writer": {"outcome": {"409 F003": 197, "201": 3}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 298.2, "p95_ms": 423.0, "max_ms": 504.7}, "bystander_reads": {"outcome": {"200": 20}, "server_error_5xx": 0, "connection_failed": 0, "p50_ms": 211.4, "p95_ms": 324.3, "max_ms": 338.0}, "rows_saved": 3}]
+데드락 0
+yeogirok-perf-nolock
+[18:11:18] 앱 로그 ERROR 수: 0
+[18:11:18] DONE concurrency (exit 0)
+{
+ "Redis 정상": {
+  "조회": {
+   "status": 200,
+   "code": null,
+   "seconds": 0.01
+  },
+  "저장": {
+   "status": 201,
+   "code": null,
+   "seconds": 0.01
+  },
+  "조회 50건 동시": {
+   "응답": {
+    "200": 50
+   },
+   "중앙값 초": 0.06,
+   "최대 초": 0.08
+  }
+ },
+ "Redis 중단": {
+  "조회": {
+   "status": 200,
+   "code": null,
+   "seconds": 2.01
+  },
+  "저장": {
+   "status": 500,
+   "code": "C014",
+   "seconds": 4.02
+  },
+  "조회 50건 동시": {
+   "응답": {
+    "200": 50
+   },
+   "중앙값 초": 2.04,
+   "최대 초": 2.07
+  },
+  "저장된 행(저장 요청 회원)": 0
+ },
+ "Redis 다시 뜬 뒤": {
+  "새 저장": {
+   "status": 201,
+   "code": null,
+   "seconds": 0.21
+  },
+  "성공까지 초": 0.2,
+  "조회": {
+   "status": 200,
+   "code": null,
+   "seconds": 0.01
+  }
+ }
+}
+started redisbefore on 18080 (27s)
+{
+ "Redis 정상": {
+  "조회": {
+   "status": 200,
+   "code": null,
+   "seconds": 0.63
+  },
+  "저장": {
+   "status": 201,
+   "code": null,
+   "seconds": 0.39
+  },
+  "조회 50건 동시": {
+   "응답": {
+    "200": 50
+   },
+   "중앙값 초": 0.36,
+   "최대 초": 0.49
+  }
+ },
+ "Redis 중단": {
+  "조회": {
+   "status": 200,
+   "code": null,
+   "seconds": 60.02
+  },
+  "저장": {
+   "status": 500,
+   "code": "C014",
+   "seconds": 120.02
+  },
+  "조회 50건 동시": {
+   "응답": {
+    "200": 50
+   },
+   "중앙값 초": 60.17,
+   "최대 초": 60.26
+  },
+  "저장된 행(저장 요청 회원)": 0
+ },
+ "Redis 다시 뜬 뒤": {
+  "새 저장": {
+   "status": 201,
+   "code": null,
+   "seconds": 3.46
+  },
+  "성공까지 초": 3.5,
+  "조회": {
+   "status": 200,
+   "code": null,
+   "seconds": 0.03
+  }
+ }
+}
+yeogirok-perf-main
+[18:16:03] DONE redis (exit 0)
+{"요청": 500, "종료": "stop40", "종료에 걸린 초": 2.2, "컨테이너 종료 코드": "143", "202 받은 요청": 238, "응답 못 받은 요청": 262, "종료 직후 DB": {"FAILED": 72, "PUBLISHED": 55, "REGISTERING": 111}, "끊긴 팁(REGISTERING)": 111, "끊긴 팁의 Redis 상태 예": {"retryable": false}, "복구까지 초(끊긴 때부터)": 49.4, "복구까지 초(다시 뜬 때부터)": 21.5, "복구 뒤 DB": {"PUBLISHED": 55, "FAILED": 183}, "기한 안에 복구 안 된 팁": 0, "복구된 팁의 Redis 상태 예": {"retryable": false}, "재시도(051) 응답": {"202": 183}, "재시도 뒤 DB": {"PUBLISHED": 238}, "전체 행 수 = 종료 직후 행 수": true}
+{"요청": 500, "종료": "stop40", "종료에 걸린 초": 1.9, "컨테이너 종료 코드": "143", "202 받은 요청": 242, "응답 못 받은 요청": 258, "종료 직후 DB": {"FAILED": 126, "PUBLISHED": 72, "REGISTERING": 44}, "끊긴 팁(REGISTERING)": 44, "끊긴 팁의 Redis 상태 예": {"retryable": false}, "복구까지 초(끊긴 때부터)": 49.2, "복구까지 초(다시 뜬 때부터)": 21.6, "복구 뒤 DB": {"PUBLISHED": 72, "FAILED": 170}, "기한 안에 복구 안 된 팁": 0, "복구된 팁의 Redis 상태 예": {"retryable": false}, "재시도(051) 응답": {"202": 170}, "재시도 뒤 DB": {"PUBLISHED": 242}, "전체 행 수 = 종료 직후 행 수": true}
+{"요청": 500, "종료": "stop40", "종료에 걸린 초": 2.1, "컨테이너 종료 코드": "143", "202 받은 요청": 276, "응답 못 받은 요청": 224, "종료 직후 DB": {"FAILED": 111, "PUBLISHED": 72, "REGISTERING": 93}, "끊긴 팁(REGISTERING)": 93, "끊긴 팁의 Redis 상태 예": {"retryable": false}, "복구까지 초(끊긴 때부터)": 49.2, "복구까지 초(다시 뜬 때부터)": 21.6, "복구 뒤 DB": {"PUBLISHED": 72, "FAILED": 204}, "기한 안에 복구 안 된 팁": 0, "복구된 팁의 Redis 상태 예": {"retryable": false}, "재시도(051) 응답": {"202": 204}, "재시도 뒤 DB": {"PUBLISHED": 276}, "전체 행 수 = 종료 직후 행 수": true}
+{"요청": 500, "종료": "stop10", "종료에 걸린 초": 1.9, "컨테이너 종료 코드": "143", "202 받은 요청": 268, "응답 못 받은 요청": 232, "종료 직후 DB": {"FAILED": 63, "PUBLISHED": 69, "REGISTERING": 136}, "끊긴 팁(REGISTERING)": 136, "끊긴 팁의 Redis 상태 예": {"retryable": false}, "복구까지 초(끊긴 때부터)": 51.6, "복구까지 초(다시 뜬 때부터)": 23.9, "복구 뒤 DB": {"PUBLISHED": 69, "FAILED": 199}, "기한 안에 복구 안 된 팁": 0, "복구된 팁의 Redis 상태 예": {"retryable": false}, "재시도(051) 응답": {"202": 199}, "재시도 뒤 DB": {"PUBLISHED": 268}, "전체 행 수 = 종료 직후 행 수": true}
+{"요청": 500, "종료": "stop10", "종료에 걸린 초": 1.9, "컨테이너 종료 코드": "143", "202 받은 요청": 262, "응답 못 받은 요청": 238, "종료 직후 DB": {"FAILED": 109, "PUBLISHED": 70, "REGISTERING": 83}, "끊긴 팁(REGISTERING)": 83, "끊긴 팁의 Redis 상태 예": {"retryable": false}, "복구까지 초(끊긴 때부터)": 51.3, "복구까지 초(다시 뜬 때부터)": 21.6, "복구 뒤 DB": {"PUBLISHED": 70, "FAILED": 192}, "기한 안에 복구 안 된 팁": 0, "복구된 팁의 Redis 상태 예": {"retryable": false}, "재시도(051) 응답": {"202": 192}, "재시도 뒤 DB": {"PUBLISHED": 262}, "전체 행 수 = 종료 직후 행 수": true}
+{"요청": 500, "종료": "stop10", "종료에 걸린 초": 1.9, "컨테이너 종료 코드": "143", "202 받은 요청": 230, "응답 못 받은 요청": 270, "종료 직후 DB": {"FAILED": 113, "PUBLISHED": 64, "REGISTERING": 53}, "끊긴 팁(REGISTERING)": 53, "끊긴 팁의 Redis 상태 예": {"retryable": false}, "복구까지 초(끊긴 때부터)": 50.3, "복구까지 초(다시 뜬 때부터)": 21.6, "복구 뒤 DB": {"PUBLISHED": 64, "FAILED": 166}, "기한 안에 복구 안 된 팁": 0, "복구된 팁의 Redis 상태 예": {"retryable": false}, "재시도(051) 응답": {"202": 166}, "재시도 뒤 DB": {"PUBLISHED": 230}, "전체 행 수 = 종료 직후 행 수": true}
+{"요청": 500, "종료": "stop40", "종료에 걸린 초": 2.6, "컨테이너 종료 코드": "143", "202 받은 요청": 240, "응답 못 받은 요청": 260, "종료 직후 DB": {"PUBLISHED": 240}, "끊긴 팁(REGISTERING)": 0, "복구까지 초(끊긴 때부터)": 0, "복구까지 초(다시 뜬 때부터)": 0, "복구 뒤 DB": {"PUBLISHED": 240}, "기한 안에 복구 안 된 팁": 0, "재시도(051) 응답": {}, "재시도 뒤 DB": {"PUBLISHED": 240}, "전체 행 수 = 종료 직후 행 수": true}
+{"요청": 500, "종료": "stop40", "종료에 걸린 초": 2.4, "컨테이너 종료 코드": "143", "202 받은 요청": 240, "응답 못 받은 요청": 260, "종료 직후 DB": {"PUBLISHED": 240}, "끊긴 팁(REGISTERING)": 0, "복구까지 초(끊긴 때부터)": 0, "복구까지 초(다시 뜬 때부터)": 0, "복구 뒤 DB": {"PUBLISHED": 240}, "기한 안에 복구 안 된 팁": 0, "재시도(051) 응답": {}, "재시도 뒤 DB": {"PUBLISHED": 240}, "전체 행 수 = 종료 직후 행 수": true}
+{"요청": 500, "종료": "stop40", "종료에 걸린 초": 2.6, "컨테이너 종료 코드": "143", "202 받은 요청": 237, "응답 못 받은 요청": 263, "종료 직후 DB": {"PUBLISHED": 237}, "끊긴 팁(REGISTERING)": 0, "복구까지 초(끊긴 때부터)": 0, "복구까지 초(다시 뜬 때부터)": 0, "복구 뒤 DB": {"PUBLISHED": 237}, "기한 안에 복구 안 된 팁": 0, "재시도(051) 응답": {}, "재시도 뒤 DB": {"PUBLISHED": 237}, "전체 행 수 = 종료 직후 행 수": true}
+{"요청": 500, "종료": "stop10", "종료에 걸린 초": 2.5, "컨테이너 종료 코드": "143", "202 받은 요청": 238, "응답 못 받은 요청": 262, "종료 직후 DB": {"PUBLISHED": 238}, "끊긴 팁(REGISTERING)": 0, "복구까지 초(끊긴 때부터)": 0, "복구까지 초(다시 뜬 때부터)": 0, "복구 뒤 DB": {"PUBLISHED": 238}, "기한 안에 복구 안 된 팁": 0, "재시도(051) 응답": {}, "재시도 뒤 DB": {"PUBLISHED": 238}, "전체 행 수 = 종료 직후 행 수": true}
+{"요청": 500, "종료": "stop10", "종료에 걸린 초": 2.8, "컨테이너 종료 코드": "143", "202 받은 요청": 243, "응답 못 받은 요청": 257, "종료 직후 DB": {"PUBLISHED": 243}, "끊긴 팁(REGISTERING)": 0, "복구까지 초(끊긴 때부터)": 0, "복구까지 초(다시 뜬 때부터)": 0, "복구 뒤 DB": {"PUBLISHED": 243}, "기한 안에 복구 안 된 팁": 0, "재시도(051) 응답": {}, "재시도 뒤 DB": {"PUBLISHED": 243}, "전체 행 수 = 종료 직후 행 수": true}
+{"요청": 500, "종료": "stop10", "종료에 걸린 초": 2.7, "컨테이너 종료 코드": "143", "202 받은 요청": 233, "응답 못 받은 요청": 267, "종료 직후 DB": {"PUBLISHED": 233}, "끊긴 팁(REGISTERING)": 0, "복구까지 초(끊긴 때부터)": 0, "복구까지 초(다시 뜬 때부터)": 0, "복구 뒤 DB": {"PUBLISHED": 233}, "기한 안에 복구 안 된 팁": 0, "재시도(051) 응답": {}, "재시도 뒤 DB": {"PUBLISHED": 233}, "전체 행 수 = 종료 직후 행 수": true}
+{"요청": 200, "종료": "kill", "종료에 걸린 초": 0.5, "컨테이너 종료 코드": "137", "202 받은 요청": 31, "응답 못 받은 요청": 169, "종료 직후 DB": {"REGISTERING": 42}, "끊긴 팁(REGISTERING)": 42, "끊긴 팁의 Redis 상태 예": {"retryable": false}, "복구까지 초(끊긴 때부터)": 49.7, "복구까지 초(다시 뜬 때부터)": 21.5, "복구 뒤 DB": {"FAILED": 42}, "기한 안에 복구 안 된 팁": 0, "복구된 팁의 Redis 상태 예": {"retryable": true}, "재시도(051) 응답": {"202": 42}, "재시도 뒤 DB": {"PUBLISHED": 42}, "전체 행 수 = 종료 직후 행 수": true}
+[18:26:39] DONE async (exit 0)
+
+== 1,000건 (발자취 테이블 200KB, 인덱스 40KB)
+     0.791ms [0.565~1.128] 읽은 행     1,000 버퍼      31 Seq Scan                                   046 방문 분포(서울 화면)
+     0.426ms [0.394~0.618] 읽은 행     1,000 버퍼      31 Seq Scan                                   046 방문 분포(동네 화면)
+     0.538ms [0.452~0.858] 읽은 행     1,000 버퍼      31 Seq Scan                                   046 방문 분포(서울, 최근 30일)
+     0.552ms [0.543~0.985] 읽은 행     1,000 버퍼      31 Seq Scan                                   046 방문 분포(서울, 카테고리)
+     2.605ms [2.494~3.463] 읽은 행     1,000 버퍼      25 Seq Scan                                   046 방문 분포(전국, 도 단위)
+     0.338ms [0.330~0.400] 읽은 행     1,000 버퍼      25 Seq Scan                                   047 주변 팁(100m 사각형)
+     0.239ms [0.218~0.438] 읽은 행     1,000 버퍼      25 Seq Scan                                   041 같은 날 내 발자취
+     0.284ms [0.274~0.539] 읽은 행     1,000 버퍼      31 Seq Scan                                   042 내 발자취 목록
+     0.154ms [0.140~0.383] 읽은 행        24 버퍼      22 Bitmap Heap Scan, Bitmap Index Scan(uq_ar_tips_author_request) 053 내 팁 목록
+     4.835ms [4.246~5.164] 읽은 행     1,000 버퍼   4,095 Function Scan                              INSERT 발자취 1,000행
+
+== 10,000건 (발자취 테이블 1,992KB, 인덱스 240KB)
+     4.435ms [3.882~6.090] 읽은 행    10,000 버퍼     249 Seq Scan                                   046 방문 분포(서울 화면)
+     2.589ms [2.494~2.814] 읽은 행    10,000 버퍼     255 Seq Scan                                   046 방문 분포(동네 화면)
+     3.268ms [3.143~3.395] 읽은 행    10,000 버퍼     255 Seq Scan                                   046 방문 분포(서울, 최근 30일)
+     3.795ms [3.731~4.117] 읽은 행    10,000 버퍼     255 Seq Scan                                   046 방문 분포(서울, 카테고리)
+    22.476ms [22.093~25.700] 읽은 행    10,000 버퍼     249 Seq Scan                                   046 방문 분포(전국, 도 단위)
+     2.873ms [2.779~2.994] 읽은 행    10,000 버퍼     256 Seq Scan                                   047 주변 팁(100m 사각형)
+     1.930ms [1.622~2.079] 읽은 행    10,000 버퍼     249 Seq Scan                                   041 같은 날 내 발자취
+     1.801ms [1.696~2.227] 읽은 행    10,000 버퍼     255 Seq Scan                                   042 내 발자취 목록
+     0.238ms [0.231~0.437] 읽은 행        44 버퍼      33 Bitmap Heap Scan, Bitmap Index Scan(uq_ar_tips_author_request) 053 내 팁 목록
+     4.753ms [4.413~4.990] 읽은 행     1,000 버퍼   4,093 Function Scan                              INSERT 발자취 1,000행
+
+== 100,000건 (발자취 테이블 20,056KB, 인덱스 2,208KB)
+    43.781ms [39.079~45.994] 읽은 행   100,000 버퍼   2,507 Seq Scan                                   046 방문 분포(서울 화면)
+    25.609ms [23.295~35.408] 읽은 행   100,000 버퍼   2,513 Seq Scan                                   046 방문 분포(동네 화면)
+    29.435ms [22.590~35.774] 읽은 행   100,000 버퍼   2,551 Seq Scan                                   046 방문 분포(서울, 최근 30일)
+    27.849ms [24.168~30.260] 읽은 행   100,000 버퍼   2,513 Seq Scan                                   046 방문 분포(서울, 카테고리)
+   596.967ms [520.156~606.510] 읽은 행   100,000 버퍼   2,513 Seq Scan                                   046 방문 분포(전국, 도 단위)
+    28.676ms [26.182~38.534] 읽은 행   100,000 버퍼   2,564 Seq Scan                                   047 주변 팁(100m 사각형)
+    16.699ms [14.686~17.308] 읽은 행   100,000 버퍼   2,507 Seq Scan                                   041 같은 날 내 발자취
+    16.229ms [15.317~16.541] 읽은 행   100,000 버퍼   2,513 Seq Scan                                   042 내 발자취 목록
+     0.212ms [0.209~0.364] 읽은 행        22 버퍼      22 Bitmap Heap Scan, Bitmap Index Scan(uq_ar_tips_author_request) 053 내 팁 목록
+     5.394ms [4.645~7.894] 읽은 행     1,000 버퍼   4,095 Function Scan                              INSERT 발자취 1,000행
+
+== 1,000,000건 (발자취 테이블 202,280KB, 인덱스 21,960KB)
+   205.145ms [198.238~255.587] 읽은 행 1,000,002 버퍼  25,285 Seq Scan                                   046 방문 분포(서울 화면)
+   129.976ms [127.597~141.461] 읽은 행   999,999 버퍼  25,373 Seq Scan                                   046 방문 분포(동네 화면)
+   167.521ms [164.098~168.742] 읽은 행   999,999 버퍼  25,373 Seq Scan                                   046 방문 분포(서울, 최근 30일)
+   222.846ms [206.146~259.077] 읽은 행   999,999 버퍼  25,291 Seq Scan                                   046 방문 분포(서울, 카테고리)
+  3522.185ms [3359.900~3838.688] 읽은 행 1,000,002 버퍼  25,373 Seq Scan                                   046 방문 분포(전국, 도 단위)
+   159.699ms [149.892~172.498] 읽은 행   999,999 버퍼  25,641 Seq Scan                                   047 주변 팁(100m 사각형)
+   110.740ms [99.768~115.169] 읽은 행   999,999 버퍼  25,285 Seq Scan                                   041 같은 날 내 발자취
+    94.797ms [90.308~103.919] 읽은 행 1,000,002 버퍼  25,373 Seq Scan                                   042 내 발자취 목록
+     0.234ms [0.221~0.271] 읽은 행        40 버퍼      32 Bitmap Heap Scan, Bitmap Index Scan(uq_ar_tips_author_request) 053 내 팁 목록
+     9.772ms [4.542~51.679] 읽은 행     1,000 버퍼   3,110 Function Scan                              INSERT 발자취 1,000행
+
+== 1,000건 (발자취 테이블 200KB, 인덱스 168KB)
+     0.381ms [0.335~0.416] 읽은 행        55 버퍼       4 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(서울 화면)
+     0.215ms [0.196~0.232] 읽은 행         2 버퍼       9 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(동네 화면)
+     0.246ms [0.218~0.334] 읽은 행        55 버퍼      10 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(서울, 최근 30일)
+     0.309ms [0.293~0.381] 읽은 행        55 버퍼      10 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(서울, 카테고리)
+     2.729ms [2.615~4.164] 읽은 행     1,000 버퍼      25 Seq Scan                                   046 방문 분포(전국, 도 단위)
+     0.066ms [0.063~0.077] 읽은 행         0 버퍼       2 Index Scan(ix_tip_geo)                     047 주변 팁(100m 사각형)
+     0.133ms [0.123~0.188] 읽은 행        22 버퍼      13 Bitmap Heap Scan, Bitmap Index Scan(ix_fp_user) 041 같은 날 내 발자취
+     0.173ms [0.170~0.206] 읽은 행        22 버퍼      19 Bitmap Heap Scan, Bitmap Index Scan(ix_fp_user) 042 내 발자취 목록
+     0.145ms [0.135~0.178] 읽은 행        24 버퍼      22 Bitmap Heap Scan, Bitmap Index Scan(ix_tip_author) 053 내 팁 목록
+     8.821ms [8.373~9.919] 읽은 행     1,000 버퍼   8,139 Function Scan                              INSERT 발자취 1,000행
+
+== 10,000건 (발자취 테이블 1,992KB, 인덱스 1,088KB)
+     1.652ms [1.592~1.702] 읽은 행       458 버퍼      11 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(서울 화면)
+     0.284ms [0.275~0.295] 읽은 행        16 버퍼      10 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(동네 화면)
+     0.681ms [0.646~0.716] 읽은 행       458 버퍼      17 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(서울, 최근 30일)
+     1.001ms [0.928~1.085] 읽은 행       458 버퍼      17 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(서울, 카테고리)
+    24.836ms [21.596~26.925] 읽은 행    10,000 버퍼     249 Seq Scan                                   046 방문 분포(전국, 도 단위)
+     0.071ms [0.065~0.072] 읽은 행         0 버퍼       2 Index Scan(ix_tip_geo)                     047 주변 팁(100m 사각형)
+     0.269ms [0.227~0.450] 읽은 행        42 버퍼      25 Bitmap Heap Scan, Bitmap Index Scan(ix_fp_user) 041 같은 날 내 발자취
+     0.287ms [0.280~0.576] 읽은 행        42 버퍼      31 Bitmap Heap Scan, Bitmap Index Scan(ix_fp_user) 042 내 발자취 목록
+     0.247ms [0.241~0.382] 읽은 행        44 버퍼      33 Bitmap Heap Scan, Bitmap Index Scan(ix_tip_author) 053 내 팁 목록
+     8.952ms [8.548~10.485] 읽은 행     1,000 버퍼   8,135 Function Scan                              INSERT 발자취 1,000행
+
+== 100,000건 (발자취 테이블 20,056KB, 인덱스 10,376KB)
+    20.010ms [14.846~21.673] 읽은 행     4,594 버퍼      87 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(서울 화면)
+     1.322ms [1.111~2.005] 읽은 행       158 버퍼      19 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(동네 화면)
+     6.065ms [5.277~6.312] 읽은 행     4,594 버퍼      93 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(서울, 최근 30일)
+     8.600ms [7.926~8.666] 읽은 행     4,594 버퍼      93 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(서울, 카테고리)
+   523.205ms [516.748~596.417] 읽은 행   100,000 버퍼   2,513 Seq Scan                                   046 방문 분포(전국, 도 단위)
+     0.103ms [0.091~0.159] 읽은 행         0 버퍼       3 Index Scan(ix_tip_geo)                     047 주변 팁(100m 사각형)
+     0.197ms [0.178~0.287] 읽은 행        22 버퍼      16 Bitmap Heap Scan, Bitmap Index Scan(ix_fp_user) 041 같은 날 내 발자취
+     0.300ms [0.233~0.426] 읽은 행        22 버퍼      22 Bitmap Heap Scan, Bitmap Index Scan(ix_fp_user) 042 내 발자취 목록
+     0.208ms [0.197~0.246] 읽은 행        22 버퍼      22 Bitmap Heap Scan, Bitmap Index Scan(ix_tip_author) 053 내 팁 목록
+    10.522ms [9.585~11.609] 읽은 행     1,000 버퍼   9,151 Function Scan                              INSERT 발자취 1,000행
+
+== 1,000,000건 (발자취 테이블 202,280KB, 인덱스 103,208KB)
+   133.568ms [129.741~150.184] 읽은 행    46,049 버퍼     839 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(서울 화면)
+     5.936ms [5.741~9.208] 읽은 행     1,543 버퍼      94 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(동네 화면)
+    49.528ms [48.795~57.852] 읽은 행    46,049 버퍼     839 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(서울, 최근 30일)
+    81.848ms [79.793~83.585] 읽은 행    46,049 버퍼     845 Index Only Scan(ix_fp_geo_cover)           046 방문 분포(서울, 카테고리)
+  3636.215ms [3421.150~3825.332] 읽은 행 1,000,002 버퍼  25,373 Seq Scan                                   046 방문 분포(전국, 도 단위)
+     0.383ms [0.380~0.480] 읽은 행        10 버퍼      17 Index Scan(ix_tip_geo)                     047 주변 팁(100m 사각형)
+     0.155ms [0.140~0.198] 읽은 행        40 버퍼      26 Bitmap Heap Scan, Bitmap Index Scan(ix_fp_user) 041 같은 날 내 발자취
+     0.214ms [0.201~0.228] 읽은 행        40 버퍼      32 Bitmap Heap Scan, Bitmap Index Scan(ix_fp_user) 042 내 발자취 목록
+     0.248ms [0.240~0.320] 읽은 행        40 버퍼      32 Bitmap Heap Scan, Bitmap Index Scan(ix_tip_author) 053 내 팁 목록
+    17.779ms [10.297~29.613] 읽은 행     1,000 버퍼   9,182 Function Scan                              INSERT 발자취 1,000행
+[18:30:29] DONE sql (exit 0)
+ALLDONE

@@ -1,0 +1,490 @@
+{
+ "label": "srv-rate-baseline-100k",
+ "rates": {
+  "stats-city": "20",
+  "stats-nation": "2",
+  "tips-search": "45",
+  "my-footprints": "80",
+  "my-tips": "70"
+ },
+ "vus": 30,
+ "warmup_s": 10,
+ "duration_s": 30,
+ "runs": {
+  "stats-city": [
+   {
+    "rps": 20.0,
+    "p50_ms": 63.81,
+    "p95_ms": 88.4,
+    "p99_ms": 107.98,
+    "max_ms": 148.48,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.3,
+      "max": 2.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.076,
+      "max": 0.161
+     },
+     "system_cpu": {
+      "avg": 0.409,
+      "max": 0.651
+     },
+     "heap_mb": {
+      "avg": 418.198,
+      "max": 706.139
+     }
+    }
+   },
+   {
+    "rps": 20.0,
+    "p50_ms": 62.19,
+    "p95_ms": 84.26,
+    "p99_ms": 97.82,
+    "max_ms": 108.68,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.067,
+      "max": 2.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.069,
+      "max": 0.084
+     },
+     "system_cpu": {
+      "avg": 0.392,
+      "max": 0.528
+     },
+     "heap_mb": {
+      "avg": 414.234,
+      "max": 710.655
+     }
+    }
+   },
+   {
+    "rps": 20.0,
+    "p50_ms": 64.27,
+    "p95_ms": 88.67,
+    "p99_ms": 103.45,
+    "max_ms": 136.9,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.167,
+      "max": 2.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.072,
+      "max": 0.096
+     },
+     "system_cpu": {
+      "avg": 0.421,
+      "max": 0.679
+     },
+     "heap_mb": {
+      "avg": 419.696,
+      "max": 717.704
+     }
+    }
+   }
+  ],
+  "stats-nation": [
+   {
+    "rps": 2.0,
+    "p50_ms": 768.46,
+    "p95_ms": 925.86,
+    "p99_ms": 1020.33,
+    "max_ms": 1031.82,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.516,
+      "max": 2.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.07,
+      "max": 0.1
+     },
+     "system_cpu": {
+      "avg": 0.461,
+      "max": 0.678
+     },
+     "heap_mb": {
+      "avg": 417.33,
+      "max": 709.42
+     }
+    }
+   },
+   {
+    "rps": 2.0,
+    "p50_ms": 784.47,
+    "p95_ms": 911.28,
+    "p99_ms": 946.49,
+    "max_ms": 962.31,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.533,
+      "max": 2.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.067,
+      "max": 0.108
+     },
+     "system_cpu": {
+      "avg": 0.462,
+      "max": 0.598
+     },
+     "heap_mb": {
+      "avg": 398.293,
+      "max": 666.453
+     }
+    }
+   },
+   {
+    "rps": 2.0,
+    "p50_ms": 759.33,
+    "p95_ms": 918.68,
+    "p99_ms": 953.21,
+    "max_ms": 970.92,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.548,
+      "max": 2.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.068,
+      "max": 0.101
+     },
+     "system_cpu": {
+      "avg": 0.455,
+      "max": 0.674
+     },
+     "heap_mb": {
+      "avg": 443.247,
+      "max": 689.975
+     }
+    }
+   }
+  ],
+  "tips-search": [
+   {
+    "rps": 45.0,
+    "p50_ms": 33.78,
+    "p95_ms": 49.05,
+    "p99_ms": 64.1,
+    "max_ms": 95.65,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.433,
+      "max": 2.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.031,
+      "max": 0.036
+     },
+     "system_cpu": {
+      "avg": 0.449,
+      "max": 0.656
+     },
+     "heap_mb": {
+      "avg": 344.82,
+      "max": 437.987
+     }
+    }
+   },
+   {
+    "rps": 45.0,
+    "p50_ms": 32.68,
+    "p95_ms": 47.22,
+    "p99_ms": 54.57,
+    "max_ms": 93.79,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.267,
+      "max": 2.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.031,
+      "max": 0.042
+     },
+     "system_cpu": {
+      "avg": 0.436,
+      "max": 0.679
+     },
+     "heap_mb": {
+      "avg": 606.687,
+      "max": 698.987
+     }
+    }
+   },
+   {
+    "rps": 45.0,
+    "p50_ms": 32.38,
+    "p95_ms": 47.32,
+    "p99_ms": 56.95,
+    "max_ms": 76.42,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.333,
+      "max": 2.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.03,
+      "max": 0.039
+     },
+     "system_cpu": {
+      "avg": 0.44,
+      "max": 0.669
+     },
+     "heap_mb": {
+      "avg": 266.822,
+      "max": 358.989
+     }
+    }
+   }
+  ],
+  "my-footprints": [
+   {
+    "rps": 80.0,
+    "p50_ms": 22.16,
+    "p95_ms": 38.21,
+    "p99_ms": 58.55,
+    "max_ms": 98.79,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.9,
+      "max": 4.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.062,
+      "max": 0.097
+     },
+     "system_cpu": {
+      "avg": 0.523,
+      "max": 0.724
+     },
+     "heap_mb": {
+      "avg": 408.967,
+      "max": 712.989
+     }
+    }
+   },
+   {
+    "rps": 80.0,
+    "p50_ms": 20.87,
+    "p95_ms": 32.45,
+    "p99_ms": 45.58,
+    "max_ms": 98.09,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.533,
+      "max": 3.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.061,
+      "max": 0.204
+     },
+     "system_cpu": {
+      "avg": 0.5,
+      "max": 0.703
+     },
+     "heap_mb": {
+      "avg": 405.668,
+      "max": 723.112
+     }
+    }
+   },
+   {
+    "rps": 80.0,
+    "p50_ms": 21.37,
+    "p95_ms": 34.79,
+    "p99_ms": 46.64,
+    "max_ms": 71.01,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.733,
+      "max": 3.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.065,
+      "max": 0.246
+     },
+     "system_cpu": {
+      "avg": 0.516,
+      "max": 0.735
+     },
+     "heap_mb": {
+      "avg": 382.893,
+      "max": 716.664
+     }
+    }
+   }
+  ],
+  "my-tips": [
+   {
+    "rps": 70.0,
+    "p50_ms": 24.77,
+    "p95_ms": 41.67,
+    "p99_ms": 100.33,
+    "max_ms": 312.95,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.867,
+      "max": 9.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.053,
+      "max": 0.067
+     },
+     "system_cpu": {
+      "avg": 0.514,
+      "max": 0.807
+     },
+     "heap_mb": {
+      "avg": 362.963,
+      "max": 577.063
+     }
+    }
+   },
+   {
+    "rps": 70.0,
+    "p50_ms": 24.73,
+    "p95_ms": 39.92,
+    "p99_ms": 81.03,
+    "max_ms": 198.56,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.8,
+      "max": 9.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.055,
+      "max": 0.081
+     },
+     "system_cpu": {
+      "avg": 0.509,
+      "max": 0.747
+     },
+     "heap_mb": {
+      "avg": 346.647,
+      "max": 560.047
+     }
+    }
+   },
+   {
+    "rps": 70.0,
+    "p50_ms": 24.51,
+    "p95_ms": 38.31,
+    "p99_ms": 45.88,
+    "max_ms": 79.06,
+    "failed_rate": 0,
+    "dropped": 0,
+    "server": {
+     "hikari_active": {
+      "avg": 1.567,
+      "max": 3.0
+     },
+     "hikari_pending": {
+      "avg": 0.0,
+      "max": 0.0
+     },
+     "process_cpu": {
+      "avg": 0.053,
+      "max": 0.065
+     },
+     "system_cpu": {
+      "avg": 0.503,
+      "max": 0.692
+     },
+     "heap_mb": {
+      "avg": 332.357,
+      "max": 546.091
+     }
+    }
+   }
+  ]
+ }
+}
