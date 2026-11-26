@@ -3,6 +3,7 @@ package com.ssafy.yeogirok.domain.auth.token;
 import java.time.Clock;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -68,8 +69,11 @@ public class JwtConfig {
 		decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(
 			new AccessTokenExpiryValidator(clock),
 			new JwtIssuerValidator(properties.issuer()),
+			// 스프링의 만료 검사는 exp 가 없으면 통과시킨다. 만료 없는 토큰을 받지 않는다.
+			new JwtClaimValidator<Object>(JwtClaimNames.EXP, Objects::nonNull),
 			new JwtClaimValidator<String>(JwtClaimNames.SUB, StringUtils::hasText),
-			new JwtClaimValidator<String>(ROLE_CLAIM, ALLOWED_ROLES::contains),
+			// 변경 불가 Set 은 contains(null) 에서 예외를 던진다. role 이 없는 토큰이 500 이 되지 않게 먼저 거른다.
+			new JwtClaimValidator<String>(ROLE_CLAIM, role -> role != null && ALLOWED_ROLES.contains(role)),
 			withdrawnUserTokens));
 		return decoder;
 	}

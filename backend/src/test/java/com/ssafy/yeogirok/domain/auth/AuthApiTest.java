@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,20 +14,29 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.function.Consumer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwsHeader;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import com.ssafy.yeogirok.domain.auth.token.JwtProperties;
 import com.ssafy.yeogirok.domain.user.repository.UserRepository;
 import com.ssafy.yeogirok.global.oauth.OAuthProvider;
 import com.ssafy.yeogirok.support.MutableClock;
@@ -52,6 +62,12 @@ class AuthApiTest {
 	MutableClock clock;
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	JwtEncoder jwtEncoder;
+
+	@Autowired
+	JwtProperties jwtProperties;
 
 	@BeforeEach
 	void resetClock() {
@@ -376,6 +392,37 @@ class AuthApiTest {
 		@Test
 		void 액세스_토큰_자리에_아무_문자열이나_넣으면_A003() throws Exception {
 			expectFailure(logout("garbage", "x"), 401, "A003");
+		}
+
+		/** 서버 비밀값으로 서명했지만 클레임이 비정상인 토큰. 정상 값에서 하나만 바꾼다. */
+		private String signed(Consumer<JwtClaimsSet.Builder> change) {
+			Instant now = clock.instant();
+			JwtClaimsSet.Builder claims = JwtClaimsSet.builder().issuer(jwtProperties.issuer()).subject("1")
+				.issuedAt(now).expiresAt(now.plusSeconds(600)).claim("role", "USER");
+			change.accept(claims);
+			return jwtEncoder.encode(JwtEncoderParameters.from(JwsHeader.with(MacAlgorithm.HS256).build(), claims.build()))
+				.getTokenValue();
+		}
+
+		@Test
+		void 서명이_맞고_클레임이_정상이면_통과한다() throws Exception {
+			logout(signed(claims -> { }), "x").andExpect(status().isOk());
+		}
+
+		@Test
+		void 역할_클레임이_없으면_500_이_아니라_A003() throws Exception {
+			expectFailure(logout(signed(claims -> claims.claims(map -> map.remove("role"))), "x"), 401, "A003");
+		}
+
+		@Test
+		void 만료_시각_클레임이_없으면_A003() throws Exception {
+			expectFailure(logout(signed(claims -> claims.claims(map -> map.remove("exp"))), "x"), 401, "A003");
+		}
+
+		@ParameterizedTest
+		@ValueSource(strings = {"abc", "0", "-1"})
+		void 회원_번호가_양의_정수가_아니면_A001_이_아니라_A003(String subject) throws Exception {
+			expectFailure(logout(signed(claims -> claims.subject(subject)), "x"), 401, "A003");
 		}
 	}
 }
