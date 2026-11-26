@@ -118,7 +118,7 @@ Remove-Item Env:JWT_SECRET
   - `RESEED` 는 같은 묶음으로 이미 넣은 코스면 건너뛴다(새 묶음을 올리면 그 내용으로 다시 넣는다).
   - 새 코스 넣기는 두 번 돌아도 결과가 같다. 다만 `UNPUBLISH=ALL` 로 실제로 내린 실행에서는 새 코스를 넣지 않고, 다음 실행부터 넣는다.
 - 적재는 주인(`COURSE_SEED_OWNER_USER_ID`, 없으면 시스템 계정)이 만든 방만 공식 코스로 본다. 회원이 `tourapi-course:` 로 시작하는 제목을 붙인 방은 건드리지 않는다. 그래서 적재 중간에 주인을 바꾸면 이전 주인이 넣은 코스는 내리기·다시 넣기 대상이 아니다.
-- 적재 잠금은 30분 고정이다. 코스 수십 개면 몇 분이라 넉넉하다. 적재 중 서버가 꺼지면 잠금이 최대 30분 남아 그동안 다시 뜬 서버는 적재를 건너뛴다(코스 하나씩 한 트랜잭션이라 끊긴 코스만 빠지고, 다음 실행에서 들어간다).
+- 적재 잠금은 30분 고정이다. 코스 수십 개면 몇 분이라 넉넉하다. 적재 중 서버가 꺼지면 잠금이 최대 30분 남아 그동안 다시 뜬 서버는 적재를 건너뛴다(코스 하나씩 한 트랜잭션이라 끊긴 코스만 빠지고, 다음 실행에서 들어간다). 기다리지 않고 잠금을 지우는 절차는 `infra/README.md` 9단계 "적재 중에 백엔드가 죽었을 때"에 있다.
 - 비상시 DB 에서 내리기(주인이 만든 방만): `update travel_rooms set deleted_at = now() where deleted_at is null and title like 'tourapi-course:%' and id in (select room_id from room_members where user_id = <주인 회원 번호> and is_creator);`
 
 ## 테스트

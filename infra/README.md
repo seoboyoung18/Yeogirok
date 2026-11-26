@@ -683,6 +683,27 @@ sed -i '/^COURSE_SEED_\(UNPUBLISH\|RESEED\)=/d' .env
 docker compose up -d backend
 ```
 
+- **적재 중에 백엔드가 죽었을 때 (잠금이 남는 경우)**
+  - 적재는 Redis 잠금 `course-seed:lock`(수명 30분)을 잡고 돕니다. 정상 종료나 오류로 끝나면 잠금을 스스로 풉니다. 프로세스가 죽으면(강제 종료, 메모리 부족, 적재 중 배포) 풀지 못해 잠금이 최대 30분 남습니다.
+  - 증상: 다시 띄웠는데 로그에 `공식 코스 적재가 이미 돌고 있어 건너뜁니다.`만 있고 `공식 코스 적재 끝` 줄이 없습니다. 앞의 줄은 INFO라 눈에 잘 띄지 않습니다.
+  - 30분을 기다렸다가 다시 띄우거나, 아래 순서로 잠금을 지우고 다시 띄웁니다.
+  - **지우기 전에 적재가 정말 돌고 있지 않은지 확인합니다.** 돌고 있는 적재의 잠금을 지우고 백엔드를 하나 더 띄우면 두 적재가 같이 돕니다. 서버의 백엔드는 컨테이너 하나이고, 그 컨테이너가 방금 "건너뜁니다"를 남겼다면 돌고 있는 적재는 없습니다.
+  - 이미 들어간 코스는 건너뛰고 끊긴 코스부터 이어서 넣습니다. 코스 하나가 한 트랜잭션이라 반쯤 들어간 코스는 없습니다.
+  - 죽는 순간 올리던 사진 몇 장은 버킷 `record-photo/`에 남을 수 있습니다(DB에는 없는 파일). 지우는 작업은 없습니다. 로컬 재현에서는 290개 중 60개째에 죽였을 때 2장이었습니다.
+  - 로컬에서 재현하고 확인한 절차입니다(`docs/engineering/10-data-pipeline-test.md` 5·6번). 운영 서버에서 실행해 본 적은 없습니다.
+
+```bash
+cd ~/yeogirok/infra-src/infra
+docker compose logs --since 30m backend | grep '공식 코스'      # "이미 돌고 있어 건너뜁니다"만 있고 "적재 끝"이 없는지
+docker compose ps backend                                      # 백엔드 컨테이너가 하나인지
+docker compose exec redis redis-cli ttl course-seed:lock       # 남은 초. -2 면 잠금이 없다(다른 원인)
+docker compose exec redis redis-cli del course-seed:lock       # 1 이면 지워짐
+docker compose restart backend                                 # .env 는 그대로라 restart 로 충분하다. 적재는 뜬 뒤 한 번 돈다
+docker compose logs -f --since 5m backend | grep '공식 코스'   # "공식 코스 적재 끝. 넣음=…, 건너뜀=…" 확인 후 Ctrl+C
+```
+
+  - 끝나면 위와 같이 `COURSE_SEED_ENABLED=false`로 끄고 `docker compose up -d backend` 합니다.
+
 **외부 키 추가하는 법**
 1. 서버 `.env`에 `KEY=값` 추가
 2. `docker-compose.yml`의 해당 서비스 `environment`에 `KEY: ${KEY}` 한 줄 추가 (이 파일은 `infra/dev`로 커밋)
